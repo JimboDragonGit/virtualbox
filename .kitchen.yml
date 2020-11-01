@@ -1,0 +1,23 @@
+---
+driver_plugin: vagrant
+
+provisioner:
+  product_name: chef
+  product_version: 13
+
+platforms:
+  - name: debian-8
+    driver_config:
+      box: bento/debian-8
+  - name: ubuntu-16.04
+    driver_config:
+      box: bento/ubuntu-16.04
+  - name: centos-7
+    driver_config:
+      box: bento/centos-7
+
+suites:
+- name: default
+  run_list: 
+    - recipe[virtualbox-install]
+  attributes: 
