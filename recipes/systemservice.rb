@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "virtualbox::user"
+include_recipe "#{cookbook_name}::user"
 
 cookbook_file "/etc/init.d/vboxcontrol" do
   source "vboxcontrol"

@@ -24,15 +24,15 @@ default['virtualbox']['version'] = ''
 
 case node['platform_family']
 when 'mac_os_x'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/5.2.6/VirtualBox-5.2.6-120293-OSX.dmg'
+  default['virtualbox']['url'] = 'https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-OSX.dmg'
 when 'windows'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/5.2.6/VirtualBox-5.2.6-120293-Win.exe'
+  default['virtualbox']['url'] = 'https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-Win.exe'
   default['virtualbox']['version'] = Vbox::Helpers.vbox_version(node['virtualbox']['url'])
 when 'debian'
-  default['virtualbox']['version'] = '5.2'
+  default['virtualbox']['version'] = '6.1.16'
   default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/debian'
 when 'rhel', 'fedora'
-  default['virtualbox']['version'] = '5.2'
+  default['virtualbox']['version'] = '6.1.16'
   default['virtualbox']['gpg_key'] = 'http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc'
   default['virtualbox']['url'] = "http://download.virtualbox.org/virtualbox/rpm/#{node['platform_family']}/$releasever/$basearch"
 end

@@ -18,7 +18,7 @@
 #
 
 # The phpvirtualbox webportal requires the Virtualbox webservice api to be active
-include_recipe "virtualbox::webservice"
+include_recipe "#{cookbook_name}-install::webservice"
 
 # This recipe requires the apache2 cookbook to be available
 include_recipe "apache2"
@@ -26,7 +26,7 @@ include_recipe "apache2::mod_php5"
 
 vbox_version = node['virtualbox']['version']
 phpvirtualbox_build = node['virtualbox']['webportal']['versions'][vbox_version]
-phpvirtualbox_version = "#{vbox_version}-#{phpvirtualbox_build}"
+phpvirtualbox_version = "#{phpvirtualbox_build}"
 
 remote_file "#{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip" do
   source "http://downloads.sourceforge.net/project/phpvirtualbox/phpvirtualbox-#{phpvirtualbox_version}.zip"
@@ -71,5 +71,3 @@ template "#{node['virtualbox']['webportal']['installdir']}/config.php" do
       :password => data_bag_item('passwords','virtualbox-user')['rawpassword']
   )
 end
-
-
