@@ -28,40 +28,55 @@ vbox_version = node['virtualbox']['version']
 phpvirtualbox_build = node['virtualbox']['webportal']['versions'][vbox_version]
 phpvirtualbox_version = "#{phpvirtualbox_build}"
 
-remote_file "#{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip" do
-  source "http://downloads.sourceforge.net/project/phpvirtualbox/phpvirtualbox-#{phpvirtualbox_version}.zip"
-  mode "0644"
+#remote_file "#{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip" do
+#  source "http://downloads.sourceforge.net/project/phpvirtualbox/phpvirtualbox-#{phpvirtualbox_version}.zip"
+#  mode "0644"
+#end
+
+git "#{node['virtualbox']['webportal']['installdir']}" do
+  repository https://github.com/phpvirtualbox/phpvirtualbox.git
+  action :sync
+  checkout_branch 'develop'
+  enable_checkout false
+  user node[:virtualbox][:user]
+  group node[:virtualbox][:group]
 end
 
-package "unzip" do
-  action :install
+directory "#{node['virtualbox']['webportal']['installdir']}/.git" do
+  action :delete
+  recursive true
 end
 
-bash "extract-phpvirtualbox" do
-  code <<-EOH
-  cd /tmp
-  rm -rf phpvirtualbox
-  mkdir phpvirtualbox
-  cd phpvirtualbox
-  unzip #{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip
-  mkdir -p #{node['virtualbox']['webportal']['installdir']}
-  mv * #{node['virtualbox']['webportal']['installdir']}
-  cd ..
-  rm -rf phpvirtualbox
-  EOH
-end
 
-bash "enable-apache2-default-site" do
-  if node['virtualbox']['webportal']['enable-apache2-default-site'] then
-    code <<-EOH
-      if [ ! -f /etc/apache2/sites-enabled/default ]; then
-        ln -s /etc/apache2/sites-available/default /etc/apache2/sites-enabled/default
-      else
-        exit 0
-      fi
-    EOH
-  end
-end
+# package "unzip" do
+#   action :install
+# end
+
+# bash "extract-phpvirtualbox" do
+#   code <<-EOH
+#   cd /tmp
+#   rm -rf phpvirtualbox
+#   mkdir phpvirtualbox
+#   cd phpvirtualbox
+#   unzip #{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip
+#   mkdir -p #{node['virtualbox']['webportal']['installdir']}
+#   mv * #{node['virtualbox']['webportal']['installdir']}
+#   cd ..
+#   rm -rf phpvirtualbox
+#   EOH
+# end
+
+# bash "enable-apache2-default-site" do
+#   if node['virtualbox']['webportal']['enable-apache2-default-site'] then
+#     code <<-EOH
+#       if [ ! -f /etc/apache2/sites-enabled/default ]; then
+#         ln -s /etc/apache2/sites-available/default /etc/apache2/sites-enabled/default
+#       else
+#         exit 0
+#       fi
+#     EOH
+#   end
+# end
 
 template "#{node['virtualbox']['webportal']['installdir']}/config.php" do
   source "config.php.erb"

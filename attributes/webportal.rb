@@ -23,8 +23,9 @@ default['virtualbox']['webportal']['versions'] = {
     '4.0' => '7',
     '4.1' => '9',
     '4.2' => '8',
+    '4.3' => '0',
     '4.3' => '0'
 }
 
-default['virtualbox']['webportal']['installdir'] = "/var/www"
+default['virtualbox']['webportal']['installdir'] = "/var/www/html/phpvirtualbox"
 default['virtualbox']['webportal']['enable-apache2-default-site'] = false
