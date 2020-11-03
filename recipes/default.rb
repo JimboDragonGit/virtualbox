@@ -64,5 +64,12 @@ when 'rhel', 'fedora', 'opensuse'
     action :install
     source node['virtualbox']['url']
   end
+end
 
+remote_file "/tmp/#{node['virtualbox']['ext_pack_name']}" do
+  source node['virtualbox']['ext_pack_url']
+  action :create
+end
+execute 'Install Oracle VM VirtualBox Extension Pack' do
+  command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node['virtualbox']['ext_pack_name']}"
 end

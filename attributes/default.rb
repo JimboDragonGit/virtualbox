@@ -25,4 +25,5 @@ default['virtualbox']['releasever'] = '140961'
 default['virtualbox']['baseurl'] = "https://download.virtualbox.org/virtualbox/#{node['virtualbox']['version']}"
 default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_version}"
 
-default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/Oracle_VM_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}.vbox-extpack"
+default['virtualbox']['ext_pack_name'] = "Oracle_VM_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}.vbox-extpack"
+default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node['virtualbox']['ext_pack_name']}"
