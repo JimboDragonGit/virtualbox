@@ -3,21 +3,69 @@ driver_plugin: vagrant
 
 provisioner:
   product_name: chef
-  product_version: 13
+  product_version: 16.6.14
 
 platforms:
   - name: debian-8
     driver_config:
       box: bento/debian-8
+  - name: debian-9
+    driver_config:
+      box: bento/debian-9
+  - name: debian-10
+    driver_config:
+      box: bento/debian-10
+  - name: ubuntu-14.04
+    driver_config:
+      box: bento/ubuntu-14.04
   - name: ubuntu-16.04
     driver_config:
       box: bento/ubuntu-16.04
+  - name: ubuntu-18.04
+    driver_config:
+      box: bento/ubuntu-18.04
+  - name: ubuntu-18.10
+    driver_config:
+      box: bento/ubuntu-18.10
+  - name: ubuntu-19.04
+    driver_config:
+      box: bento/ubuntu-19.04
+  - name: ubuntu-20.04
+    driver_config:
+      box: bento/ubuntu-20.04
+  - name: centos-6
+    driver_config:
+      box: bento/centos-6
   - name: centos-7
     driver_config:
       box: bento/centos-7
+  - name: centos-8
+    driver_config:
+      box: bento/centos-8
+  - name: fedora-26
+    driver_config:
+      box: bento/fedora-26
+  - name: fedora-29
+    driver_config:
+      box: bento/fedora-29
+  - name: fedora-30
+    driver_config:
+      box: bento/fedora-30
+  - name: fedora-31
+    driver_config:
+      box: bento/fedora-31
+  - name: fedora-32
+    driver_config:
+      box: bento/fedora-32
+  - name: opensuse-13.2
+    driver_config:
+      box: bento/opensuse-13.2
+  - name: opensuse-15
+    driver_config:
+      box: bento/opensuse-15
 
 suites:
 - name: default
-  run_list: 
+  run_list:
     - recipe[virtualbox-install]
-  attributes: 
+  attributes:

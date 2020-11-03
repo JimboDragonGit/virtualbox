@@ -18,12 +18,14 @@
 # limitations under the License.
 #
 
+vbox_package_name = "Oracle VM VirtualBox #{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}"
+
 case node['platform_family']
 when 'mac_os_x'
 
   sha256sum = vbox_sha256sum(node['virtualbox']['url'])
 
-  dmg_package 'VirtualBox' do
+  dmg_package vbox_package_name do
     source node['virtualbox']['url']
     checksum sha256sum
     type 'pkg'
@@ -35,7 +37,7 @@ when 'windows'
   win_pkg_version = node['virtualbox']['version']
   Chef::Log.debug("Inspecting windows package version: #{win_pkg_version.inspect}")
 
-  windows_package "Oracle VM VirtualBox #{win_pkg_version}" do
+  windows_package vbox_package_name do
     action :install
     source node['virtualbox']['url']
     checksum sha256sum
@@ -44,26 +46,23 @@ when 'windows'
   end
 
 when 'debian'
-
-  apt_repository 'oracle-virtualbox' do
-    uri node['virtualbox']['url']
-    key node['virtualbox']['gpg_key']
-    distribution node['lsb']['codename']
-    components ['contrib']
+  package %w(libvpx5 libsdl1.2debian libcaca0 libxkbcommon-x11-0 libpulse0 libasyncns0 libsndfile1 libflac8 libqt5x11extras5 libqt5widgets5 libqt5printsupport5 libqt5opengl5 libqt5gui5 libqt5dbus5 libqt5network5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libqt5core5a libdouble-conversion1 ) do
+     action :install
   end
-
-  package "virtualbox-#{node['virtualbox']['version']}"
+  remote_file '/tmp/virtualbox.deb' do
+    source node['virtualbox']['url']
+    action :create
+  end
+  dpkg_package vbox_package_name do
+    action :install
+    source "/tmp/virtualbox.deb"
+  end
   package 'dkms'
 
-when 'rhel', 'fedora'
-
-  yum_repository 'oracle-virtualbox' do
-    description "#{node['platform_family']} $releasever - $basearch - Virtualbox" 
-    baseurl node['virtualbox']['url']
-    gpgkey node['virtualbox']['gpg_key']
-    gpgcheck true
+when 'rhel', 'fedora', 'opensuse'
+  rpm_package vbox_package_name do
+    action :install
+    source node['virtualbox']['url']
   end
-
-  package "VirtualBox-#{node['virtualbox']['version']}"
 
 end

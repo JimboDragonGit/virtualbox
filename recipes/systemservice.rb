@@ -28,11 +28,10 @@ directory "/etc/virtualbox" do
   mode "0755"
 end
 
-unless FileTest.exists?("/etc/virtualbox/machines_enabled")
-  cookbook_file "/etc/virtualbox/machines_enabled" do
-    source "machines_enabled"
-    mode "0644"
-  end
+cookbook_file "/etc/virtualbox/machines_enabled" do
+  source "machines_enabled"
+  mode "0644"
+  only_if {not FileTest.exists?("/etc/virtualbox/machines_enabled")}
 end
 
 host_interface = node[:network][:default_interface]

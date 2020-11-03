@@ -1,0 +1,25 @@
+Checking 14 files
+x....xxx.xxx.x
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/systemservice.rb:37
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/systemservice.rb:38
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:41
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:42
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/config.erb:3
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/vbox.cfg.erb:12
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/vbox.cfg.erb:36
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/vbox.cfg.erb:40
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/vbox.cfg.erb:44
+FC001: Use strings in preference to symbols to access node attributes: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/templates/ubuntu/vbox.cfg.erb:48
+FC002: Avoid string interpolation where not required: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/libraries/helpers.rb:11
+FC002: Avoid string interpolation where not required: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:29
+FC002: Avoid string interpolation where not required: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:36
+FC013: Use file_cache_path rather than hard-coding tmp paths: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/default.rb:52
+FC019: Access node attributes in a consistent manner: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/systemservice.rb:37
+FC019: Access node attributes in a consistent manner: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/systemservice.rb:38
+FC019: Access node attributes in a consistent manner: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:41
+FC019: Access node attributes in a consistent manner: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/webportal.rb:42
+FC069: Ensure standardized license defined in metadata: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/metadata.rb:1
+FC071: Missing LICENSE file: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/LICENSE:1
+FC078: Ensure cookbook shared under an OSI-approved open source license: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/metadata.rb:1
+FC121: Cookbook depends on cookbook made obsolete by Chef 14: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/metadata.rb:1
+FC122: Use the build_essential resource instead of the recipe: /home/jproven3/GitProject/jimbo_local/jimbodragon_chef_repo/cookbooks/virtualbox-install/recipes/user.rb:25

@@ -23,7 +23,7 @@ source_url 'https://github.com/jimbodragon/virtualbox-install'
   supports os
 end
 
-depends 'dmg'
+# depends 'dmg'
 depends 'windows'
 depends 'apt'
 depends 'apache2'
