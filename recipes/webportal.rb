@@ -34,7 +34,7 @@ phpvirtualbox_version = "#{phpvirtualbox_build}"
 #end
 
 git "#{node['virtualbox']['webportal']['installdir']}" do
-  repository https://github.com/phpvirtualbox/phpvirtualbox.git
+  repository "https://github.com/phpvirtualbox/phpvirtualbox.git"
   action :sync
   checkout_branch 'develop'
   enable_checkout false
