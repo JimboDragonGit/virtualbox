@@ -33,4 +33,5 @@ user 'virtualbox-user' do
   shell "/bin/bash"
   system true
   manage_home true
+  not_if (node['virtualbox']['user'] == default_apache_user).to_s
 end

@@ -18,5 +18,5 @@
 #
 
 # Settings for integrating virtualbox as a system service, automatically rebooting VMs at host startup
-default['virtualbox']['user'] = 'virtualbox'
-default['virtualbox']['group'] = 'vboxusers'
+default['virtualbox']['user'] = default_apache_user
+default['virtualbox']['group'] = default_apache_group
