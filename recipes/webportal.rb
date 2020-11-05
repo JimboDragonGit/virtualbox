@@ -35,6 +35,7 @@ service 'apache2' do
 end
 apache2_mod_php "virtualbox-apache2"
 
+package ['php-xml', 'php-soap', 'php-json']
 
 directory node['virtualbox']['webportal']['installdir'] do
   user node['virtualbox']['user']
@@ -59,8 +60,9 @@ end
 template "#{node['virtualbox']['webportal']['installdir']}/config.php" do
   source "config.php.erb"
   mode "0644"
+  notifies :restart, "service[vboxweb-service]", :immediately
   notifies :restart, "service[apache2]", :immediately
   variables(
-      :password => data_bag_item('passwords','virtualbox-user')['rawpassword']
+      :password => data_bag_item('passwords','virtualbox-user')['password']
   )
 end

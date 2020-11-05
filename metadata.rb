@@ -19,7 +19,7 @@ issues_url 'https://github.com/jimbodragon/virtualbox-install/issues'
 #
 source_url 'https://github.com/jimbodragon/virtualbox-install'
 
-%w{ubuntu debian centos redhat mac_os_x windows fedora opensuse}.each do |os|
+%w{ubuntu debian centos redhat mac_os_x windows fedora opensuse zentyal}.each do |os|
   supports os
 end
 

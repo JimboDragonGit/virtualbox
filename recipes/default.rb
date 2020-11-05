@@ -20,39 +20,40 @@
 
 vbox_package_name = "Oracle VM VirtualBox #{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}"
 
-sha256sum = vbox_sha256sum(node['virtualbox']['url'])
+vbox_sha256sum = vbox_sha256sum(node['virtualbox']['url'])
+extpack_sha256sum = vbox_sha256sum(node['virtualbox']['ext_pack_url'])
 case node['platform_family']
 when 'mac_os_x'
-
   dmg_package vbox_package_name do
     source node['virtualbox']['url']
-    checksum sha256sum
+    checksum vbox_sha256sum
     type 'pkg'
   end
 
 when 'windows'
-
-  sha256sum = vbox_sha256sum(node['virtualbox']['url'])
   win_pkg_version = node['virtualbox']['version']
   Chef::Log.debug("Inspecting windows package version: #{win_pkg_version.inspect}")
 
   windows_package vbox_package_name do
     action :install
     source node['virtualbox']['url']
-    checksum sha256sum
+    checksum vbox_sha256sum
     installer_type :custom
     options "-s"
   end
 
 when 'debian'
-  package %w(libvpx5 libsdl1.2debian libcaca0 libxkbcommon-x11-0 libpulse0 libasyncns0 libsndfile1 libflac8 libqt5x11extras5 libqt5widgets5 libqt5printsupport5 libqt5opengl5 libqt5gui5 libqt5dbus5 libqt5network5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libqt5core5a libdouble-conversion1 ) do
+  include_recipe "apt"
+  include_recipe "build-essential"
+  
+  package get_packages_dependencies do
      action :install
   end
 
   remote_file '/tmp/virtualbox.deb' do
     source node['virtualbox']['url']
     action :create
-    checksum sha256sum
+    checksum vbox_sha256sum
   end
 
   dpkg_package vbox_package_name do
@@ -64,16 +65,21 @@ when 'debian'
   remote_file "/tmp/#{node['virtualbox']['ext_pack_name']}" do
     source node['virtualbox']['ext_pack_url']
     action :create
+    checksum extpack_sha256sum
   end
-  if not is_extpack_installed?("Oracle VM VirtualBox Extension Pack")
-    execute 'Install Oracle VM VirtualBox Extension Pack' do
-      command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node['virtualbox']['ext_pack_name']}"
-      not_if is_extpack_installed?("Oracle VM VirtualBox Extension Pack")
-    end
+  execute 'Install Oracle VM VirtualBox Extension Pack' do
+    command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node['virtualbox']['ext_pack_name']}"
+    not_if is_extpack_installed?("Oracle VM VirtualBox Extension Pack").to_s
+  end
+
+  execute 'Loading kernel' do
+    command '/sbin/vboxconfig'
+    not_if is_vbox_kernel_loaded?.to_s
   end
 
 when 'rhel', 'fedora', 'suse'
   rpm_package vbox_package_name do
+    checksum vbox_sha256sum
     action :install
     source node['virtualbox']['url']
   end
