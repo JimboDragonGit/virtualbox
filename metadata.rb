@@ -4,7 +4,7 @@ maintainer_email 'jimbo_dragon@hotmail.com'
 license          'Apache 2.0'
 description      'Installs virtualbox'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '3.0.0'
+version '4.0.0'
 chef_version '>= 16.6.14'
 
 # The `issues_url` points to the location where issues for this cookbook are
