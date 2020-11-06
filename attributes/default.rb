@@ -27,3 +27,5 @@ default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_vers
 
 default['virtualbox']['ext_pack_name'] = "Oracle_VM_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}.vbox-extpack"
 default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node['virtualbox']['ext_pack_name']}"
+
+default['virtualbox']['default_interface'] = node['network']['default_interface']

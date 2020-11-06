@@ -30,6 +30,12 @@ directory "vboxweb-service log folder" do
   mode '0755'
 end
 
+directory "/var/www" do
+  owner node['virtualbox']['user']
+  group node['virtualbox']['group']
+  mode '0755'
+end
+
 # It is very hard to get vboxwebsrv to work correctly with password authentication
 # If anyone can get this working, feel free to submit a changed cookbook!
 # execute "Disable vboxwebsrv auth library" do
