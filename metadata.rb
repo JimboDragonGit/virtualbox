@@ -1,4 +1,4 @@
-name             'virtualbox'
+name             'virtualbox-install'
 maintainer       'Jimbo Dragon'
 maintainer_email 'jimbo_dragon@hotmail.com'
 license          'Apache 2.0'
@@ -24,7 +24,7 @@ source_url 'https://github.com/jimbodragon/virtualbox'
 end
 
 # depends 'dmg'
-depends 'windows'
-depends 'apt'
-depends 'apache2'
-depends 'build-essential'
+# depends 'windows'
+# depends 'apt'
+# depends 'apache2'
+# depends 'build-essential'
