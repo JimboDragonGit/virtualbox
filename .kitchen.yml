@@ -67,7 +67,7 @@ platforms:
 suites:
 - name: unix
   run_list:
-    - recipe[virtualbox-install]
-    - recipe[virtualbox-install::systemservice]
-    - recipe[virtualbox-install::webportal] 
+    - recipe[virtualbox]
+    - recipe[virtualbox::systemservice]
+    - recipe[virtualbox::webportal] 
   attributes:

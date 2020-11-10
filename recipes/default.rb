@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: virtualbox-install
+# Cookbook Name:: virtualbox
 # Recipe:: default
 #
 # Copyright 2011-2013, Joshua Timberman

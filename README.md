@@ -155,7 +155,7 @@ Contributions
 =============
 
 The source for this cookbook is hosted on
-[GitHub](https://github.com/spion06/virtualbox-install_chef). If you have any issues
+[GitHub](https://github.com/spion06/virtualbox_chef). If you have any issues
 with this cookbook, please follow up there.
 
 License and Author
