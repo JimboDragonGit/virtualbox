@@ -1,4 +1,4 @@
-name             'virtualbox-install'
+name             'chef-virtualbox-install'
 maintainer       'Jimbo Dragon'
 maintainer_email 'jimbo_dragon@hotmail.com'
 license          'Apache 2.0'
