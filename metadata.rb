@@ -11,13 +11,13 @@ chef_version '>= 16.6.14'
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
 # uploaded to a Supermarket.
 #
-issues_url 'https://github.com/jimbodragon/virtualbox/issues'
+issues_url 'https://github.com/jimbodragon/chef-virtualbox-install/issues'
 
 # The `source_url` points to the development repository for this cookbook.  A
 # `View Source` link will be displayed on this cookbook's page when uploaded to
 # a Supermarket.
 #
-source_url 'https://github.com/jimbodragon/virtualbox'
+source_url 'https://github.com/jimbodragon/chef-virtualbox-install'
 
 %w{ubuntu debian centos redhat mac_os_x windows fedora opensuse zentyal}.each do |os|
   supports os
