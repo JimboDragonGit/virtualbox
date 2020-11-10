@@ -26,5 +26,5 @@ end
 # depends 'dmg'
 # depends 'windows'
 # depends 'apt'
-# depends 'apache2'
+depends 'apache2'
 depends 'build-essential'
