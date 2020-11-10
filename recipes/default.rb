@@ -45,7 +45,7 @@ when 'windows'
 when 'debian'
   include_recipe "apt"
   include_recipe "build-essential"
-  
+
   package get_packages_dependencies do
      action :install
   end
