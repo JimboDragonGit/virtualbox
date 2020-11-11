@@ -1,0 +1,5 @@
+{
+  "virtualbox": {
+    "default_interface": "eth0"
+  }
+}
