@@ -153,7 +153,7 @@ module Vbox
         when 'ubuntu'
           case node['platform_version']
           when '18.04'
-            packages.append 'libvpx5', 'libdouble-conversion1'
+            packages.append 'libvpx5', 'libdouble-conversion1', "libcurl4"
           when '16.04'
             packages.append 'libvpx3', 'libdouble-conversion1v5', 'libcurl3', 'libopus0', 'libxcursor1', 'libxt6'
           end

@@ -1,5 +1,8 @@
 {
   "virtualbox": {
-    "default_interface": "eth0"
+    "default_interface": "ens160"
+  },
+  "vagrant": {
+    "version": "2.2.13"
   }
 }
