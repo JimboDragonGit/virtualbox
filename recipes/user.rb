@@ -44,14 +44,14 @@ execute "start zentyal webadmin" do
 end
 
 user 'virtualbox-user' do
-  username node['virtualbox']['user']
-  gid node['virtualbox']['group']
+  username node[cookbook_name]['user']
+  gid node[cookbook_name]['group']
   password UnixCrypt::SHA512.build(data_bag_item('passwords','virtualbox-user')['password'])
-  home node['virtualbox']['user'] == default_apache_user ? default_apache_user_home : "/home/#{node['virtualbox']['user']}"
+  home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
   shell "/bin/bash"
   system true
   manage_home true
-  notifies :stop, 'service[apache2]', :before if node['virtualbox']['user'] == default_apache_user
+  notifies :stop, 'service[apache2]', :before if node[cookbook_name]['user'] == default_apache_user
   if node['packages'].include?("zentyal-core")
     notifies :run, 'execute[stop zentyal webadmin]', :before
     notifies :run, 'execute[start zentyal webadmin]', :delayed

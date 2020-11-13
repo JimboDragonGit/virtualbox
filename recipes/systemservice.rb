@@ -34,7 +34,7 @@ cookbook_file "/etc/virtualbox/machines_enabled" do
   only_if {not FileTest.exists?("/etc/virtualbox/machines_enabled")}
 end
 
-host_interface = node['virtualbox']['default_interface']
+host_interface = node[cookbook_name]['default_interface']
 addresses = node['network']['interfaces'][host_interface]['addresses']
 host_ip = 'unknown'
 addresses.each do |ip, params|

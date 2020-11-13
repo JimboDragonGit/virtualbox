@@ -18,25 +18,25 @@
 # limitations under the License.
 #
 
-vbox_package_name = "Oracle VM VirtualBox #{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}"
+vbox_package_name = "Oracle VM VirtualBox #{node[cookbook_name]['version']}-#{node[cookbook_name]['releasever']}"
 
-vbox_sha256sum = vbox_sha256sum(node['virtualbox']['url'])
-extpack_sha256sum = vbox_sha256sum(node['virtualbox']['ext_pack_url'])
+vbox_sha256sum = vbox_sha256sum(node[cookbook_name]['url'])
+extpack_sha256sum = vbox_sha256sum(node[cookbook_name]['ext_pack_url'])
 case node['platform_family']
 when 'mac_os_x'
   dmg_package vbox_package_name do
-    source node['virtualbox']['url']
+    source node[cookbook_name]['url']
     checksum vbox_sha256sum
     type 'pkg'
   end
 
 when 'windows'
-  win_pkg_version = node['virtualbox']['version']
+  win_pkg_version = node[cookbook_name]['version']
   Chef::Log.debug("Inspecting windows package version: #{win_pkg_version.inspect}")
 
   windows_package vbox_package_name do
     action :install
-    source node['virtualbox']['url']
+    source node[cookbook_name]['url']
     checksum vbox_sha256sum
     installer_type :custom
     options "-s"
@@ -51,7 +51,7 @@ when 'debian'
   end
 
   remote_file '/tmp/virtualbox.deb' do
-    source node['virtualbox']['url']
+    source node[cookbook_name]['url']
     action :create
     checksum vbox_sha256sum
   end
@@ -62,13 +62,13 @@ when 'debian'
   end
   package 'dkms'
 
-  remote_file "/tmp/#{node['virtualbox']['ext_pack_name']}" do
-    source node['virtualbox']['ext_pack_url']
+  remote_file "/tmp/#{node[cookbook_name]['ext_pack_name']}" do
+    source node[cookbook_name]['ext_pack_url']
     action :create
     checksum extpack_sha256sum
   end
   execute 'Install Oracle VM VirtualBox Extension Pack' do
-    command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node['virtualbox']['ext_pack_name']}"
+    command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node[cookbook_name]['ext_pack_name']}"
     not_if is_extpack_installed?("Oracle VM VirtualBox Extension Pack").to_s
   end
 
@@ -81,6 +81,6 @@ when 'rhel', 'fedora', 'suse'
   rpm_package vbox_package_name do
     checksum vbox_sha256sum
     action :install
-    source node['virtualbox']['url']
+    source node[cookbook_name]['url']
   end
 end

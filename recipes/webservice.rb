@@ -24,15 +24,15 @@ template "/etc/vbox/vbox.cfg" do
 end
 
 directory "vboxweb-service log folder" do
-  path node['virtualbox']['webservice']['log']['location']
-  owner node['virtualbox']['user']
-  group node['virtualbox']['group']
+  path node[cookbook_name]['webservice']['log']['location']
+  owner node[cookbook_name]['user']
+  group node[cookbook_name]['group']
   mode '0755'
 end
 
 directory "/var/www" do
-  owner node['virtualbox']['user']
-  group node['virtualbox']['group']
+  owner node[cookbook_name]['user']
+  group node[cookbook_name]['group']
   mode '0755'
 end
 
@@ -40,9 +40,9 @@ end
 # If anyone can get this working, feel free to submit a changed cookbook!
 # execute "Disable vboxwebsrv auth library" do
 #   command "VBoxManage setproperty websrvauthlibrary null"
-#   user "#{node['virtualbox']['user']}"
+#   user "#{node[cookbook_name]['user']}"
 #   action :run
-#   environment ({'HOME' => "/home/#{node['virtualbox']['user']}"})
+#   environment ({'HOME' => "/home/#{node[cookbook_name]['user']}"})
 # end
 
 service "vboxweb-service" do

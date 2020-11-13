@@ -25,10 +25,10 @@ include_recipe "#{cookbook_name}::webservice"
 # include_recipe "apache2::mod_php5"
 
 apache2_install "virtualbox-apache2" do
-  apache_user node['virtualbox']['user']
-  apache_group node['virtualbox']['group']
+  apache_user node[cookbook_name]['user']
+  apache_group node[cookbook_name]['group']
   mpm "prefork"
-  docroot_dir File.dirname node['virtualbox']['webportal']['installdir']
+  docroot_dir File.dirname node[cookbook_name]['webportal']['installdir']
 end
 service 'apache2' do
   action :nothing
@@ -37,27 +37,27 @@ apache2_mod_php "virtualbox-apache2"
 
 package ['php-xml', 'php-soap', 'php-json']
 
-directory node['virtualbox']['webportal']['installdir'] do
-  user node['virtualbox']['user']
-  group node['virtualbox']['group']
+directory node[cookbook_name]['webportal']['installdir'] do
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
   recursive true
 end
 
-git node['virtualbox']['webportal']['installdir'] do
+git node[cookbook_name]['webportal']['installdir'] do
   repository "https://github.com/phpvirtualbox/phpvirtualbox.git"
   action :sync
   checkout_branch 'develop'
   enable_checkout false
-  user node['virtualbox']['user']
-  group node['virtualbox']['group']
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
 end
 
-directory "#{node['virtualbox']['webportal']['installdir']}/.git" do
+directory "#{node[cookbook_name]['webportal']['installdir']}/.git" do
   action :delete
   recursive true
 end
 
-template "#{node['virtualbox']['webportal']['installdir']}/config.php" do
+template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
   source "config.php.erb"
   mode "0644"
   notifies :restart, "service[vboxweb-service]", :immediately
