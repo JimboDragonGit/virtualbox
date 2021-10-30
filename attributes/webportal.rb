@@ -19,12 +19,6 @@
 
 # Map major virtualbox version numbers to the phpvirtualbox build numbers
 # https://code.google.com/p/phpvirtualbox/downloads/list
-default['virtualbox']['webportal']['versions'] = {
-    '4.0' => '7',
-    '4.1' => '9',
-    '4.2' => '8',
-    '4.3' => '0'
-}
 
-default['virtualbox']['webportal']['installdir'] = "/var/www"
+default['virtualbox']['webportal']['installdir'] = "#{default_docroot_dir}/phpvirtualbox"
 default['virtualbox']['webportal']['enable-apache2-default-site'] = false

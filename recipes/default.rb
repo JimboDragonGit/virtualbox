@@ -3,6 +3,7 @@
 # Recipe:: default
 #
 # Copyright 2011-2013, Joshua Timberman
+# Copyright 2018, Kyle McGovern
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,52 +18,73 @@
 # limitations under the License.
 #
 
+vbox_package_name = "Oracle VM VirtualBox #{node[cookbook_name]['version']}-#{node[cookbook_name]['releasever']}"
+
+vbox_sha256sum = vbox_sha256sum(node[cookbook_name]['url'])
+extpack_sha256sum = vbox_sha256sum(node[cookbook_name]['ext_pack_url'])
 case node['platform_family']
 when 'mac_os_x'
-
-  sha256sum = vbox_sha256sum(node['virtualbox']['url'])
-
-  dmg_package 'VirtualBox' do
-    source node['virtualbox']['url']
-    checksum sha256sum
+  dmg_package vbox_package_name do
+    source node[cookbook_name]['url']
+    checksum vbox_sha256sum
     type 'pkg'
   end
 
 when 'windows'
-
-  sha256sum = vbox_sha256sum(node['virtualbox']['url'])
-  win_pkg_version = node['virtualbox']['version']
+  win_pkg_version = node[cookbook_name]['version']
   Chef::Log.debug("Inspecting windows package version: #{win_pkg_version.inspect}")
 
-  windows_package "Oracle VM VirtualBox #{win_pkg_version}" do
+  windows_package vbox_package_name do
     action :install
-    source node['virtualbox']['url']
-    checksum sha256sum
+    source node[cookbook_name]['url']
+    checksum vbox_sha256sum
     installer_type :custom
     options "-s"
   end
 
 when 'debian'
+  include_recipe "apt"
 
-  apt_repository 'oracle-virtualbox' do
-    uri 'http://download.virtualbox.org/virtualbox/debian'
-    key 'http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc'
-    distribution node['lsb']['codename']
-    components ['contrib']
+  build_essential 'Install compilation tools' do
+    action :upgrade
+    compile_time true
   end
 
-  package "virtualbox-#{node['virtualbox']['version']}"
+  package get_packages_dependencies do
+     action :install
+  end
+
+  remote_file '/tmp/virtualbox.deb' do
+    source node[cookbook_name]['url']
+    action :create
+    checksum vbox_sha256sum
+  end
+
+  dpkg_package vbox_package_name do
+    action :install
+    source "/tmp/virtualbox.deb"
+  end
   package 'dkms'
 
-when 'rhel', 'fedora'
-
-  yum_repository 'oracle-virtualbox' do
-    description "#{node['platform_family']} $releasever - $basearch - Virtualbox" 
-    baseurl "http://download.virtualbox.org/virtualbox/rpm/#{node['platform_family']}/$releasever/$basearch"
-    gpgcheck true
-    gpgkey 'http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc'
+  remote_file "/tmp/#{node[cookbook_name]['ext_pack_name']}" do
+    source node[cookbook_name]['ext_pack_url']
+    action :create
+    checksum extpack_sha256sum
+  end
+  execute 'Install Oracle VM VirtualBox Extension Pack' do
+    command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node[cookbook_name]['ext_pack_name']}"
+    not_if is_extpack_installed?("Oracle VM VirtualBox Extension Pack").to_s
   end
 
-  package "VirtualBox-#{node['virtualbox']['version']}"
+  execute 'Loading kernel' do
+    command '/sbin/vboxconfig'
+    not_if is_vbox_kernel_loaded?.to_s
+  end
 
+when 'rhel', 'fedora', 'suse'
+  rpm_package vbox_package_name do
+    checksum vbox_sha256sum
+    action :install
+    source node[cookbook_name]['url']
+  end
 end

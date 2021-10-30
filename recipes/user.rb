@@ -19,18 +19,41 @@
 
 # For the user to be created successfully, a data bag item with the MD5 hashed password
 # needs to be added.
+chef_gem "unix-crypt" do
+  action :upgrade
+  compile_time true
+end
 
-include_recipe "apt"
+ruby_block 'Include unix_crypt to LinuxUser resource' do
+  block do
+    require 'unix_crypt'
+    Chef::Resource::User.send(:include, UnixCrypt)
+  end
+  action :run
+  compile_time true
+end
 
-package "build-essential"
-gem_package "ruby-shadow"
+execute "stop zentyal webadmin" do
+  action :nothing
+  command "/usr/bin/zs webadmin stop"
+end
+
+execute "start zentyal webadmin" do
+  action :nothing
+  command "/usr/bin/zs webadmin start"
+end
 
 user 'virtualbox-user' do
-  username node['virtualbox']['user']
-  gid node['virtualbox']['group']
-  password data_bag_item('passwords','virtualbox-user')['password']
-  home "/home/#{node['virtualbox']['user']}"
+  username node[cookbook_name]['user']
+  gid node[cookbook_name]['group']
+  password UnixCrypt::SHA512.build(data_bag_item('passwords','virtualbox-user')['password'])
+  home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
   shell "/bin/bash"
   system true
   manage_home true
+  notifies :stop, 'service[apache2]', :before if node[cookbook_name]['user'] == default_apache_user
+  if node['packages'].include?("zentyal-core")
+    notifies :run, 'execute[stop zentyal webadmin]', :before
+    notifies :run, 'execute[start zentyal webadmin]', :delayed
+  end
 end

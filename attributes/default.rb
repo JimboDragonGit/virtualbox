@@ -17,16 +17,15 @@
 # limitations under the License.
 #
 
+# extend Vbox::Helpers
 
-default['virtualbox']['url'] = ''
-default['virtualbox']['version'] = ''
+default['virtualbox']['version'] = '6.1.16'
+default['virtualbox']['releasever'] = '140961'
 
-case node['platform_family']
-when 'mac_os_x'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/4.2.12/VirtualBox-4.2.12-84980-OSX.dmg'
-when 'windows'
-  default['virtualbox']['url'] = 'http://download.virtualbox.org/virtualbox/4.2.12/VirtualBox-4.2.12-84980-Win.exe'
-  default['virtualbox']['version'] = Vbox::Helpers.vbox_version(node['virtualbox']['url'])
-when 'debian', 'rhel', 'fedora'
-  default['virtualbox']['version'] = '4.3'
-end
+default['virtualbox']['baseurl'] = "https://download.virtualbox.org/virtualbox/#{node['virtualbox']['version']}"
+default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_version}"
+
+default['virtualbox']['ext_pack_name'] = "Oracle_VM_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}.vbox-extpack"
+default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node['virtualbox']['ext_pack_name']}"
+
+default['virtualbox']['default_interface'] = node['network']['default_interface']

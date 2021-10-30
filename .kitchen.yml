@@ -1,23 +1,73 @@
 ---
 driver_plugin: vagrant
 
+provisioner:
+  product_name: chef
+  product_version: 16.6.14
+
 platforms:
-- name: debian-6
-  driver_config:
-    box: opscode-debian-6.0.7
-    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_debian-6.0.7_chef-11.2.0.box
-    require_chef_omnibus: 11.4.0
-- name: ubuntu-12.04
-  driver_config:
-    box: canonical-ubuntu-12.04
-    box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
-    require_chef_omnibus: true
-- name: centos-6.3
-  driver_config:
-    box: opscode-centos-6.3
-    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.3_chef-11.2.0.box
+  - name: debian-8
+    driver_config:
+      box: bento/debian-8
+  - name: debian-9
+    driver_config:
+      box: bento/debian-9
+  - name: debian-10
+    driver_config:
+      box: bento/debian-10
+  - name: ubuntu-14.04
+    driver_config:
+      box: bento/ubuntu-14.04
+  - name: ubuntu-16.04
+    driver_config:
+      box: bento/ubuntu-16.04
+  - name: ubuntu-18.04
+    driver_config:
+      box: bento/ubuntu-18.04
+  - name: ubuntu-18.10
+    driver_config:
+      box: bento/ubuntu-18.10
+  - name: ubuntu-19.04
+    driver_config:
+      box: bento/ubuntu-19.04
+  - name: ubuntu-20.04
+    driver_config:
+      box: bento/ubuntu-20.04
+  - name: centos-6
+    driver_config:
+      box: bento/centos-6
+  - name: centos-7
+    driver_config:
+      box: bento/centos-7
+  - name: centos-8
+    driver_config:
+      box: bento/centos-8
+  - name: fedora-26
+    driver_config:
+      box: bento/fedora-26
+  - name: fedora-29
+    driver_config:
+      box: bento/fedora-29
+  - name: fedora-30
+    driver_config:
+      box: bento/fedora-30
+  - name: fedora-31
+    driver_config:
+      box: bento/fedora-31
+  - name: fedora-32
+    driver_config:
+      box: bento/fedora-32
+  - name: opensuse-13.2
+    driver_config:
+      box: bento/opensuse-13.2
+  - name: opensuse-15
+    driver_config:
+      box: bento/opensuse-15
 
 suites:
-- name: default
-  run_list: ["recipe[virtualbox]"]
-  attributes: {}
+- name: unix
+  run_list:
+    - recipe[virtualbox]
+    - recipe[virtualbox::systemservice]
+    - recipe[virtualbox::webportal]
+  attributes:

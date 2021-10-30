@@ -18,58 +18,51 @@
 #
 
 # The phpvirtualbox webportal requires the Virtualbox webservice api to be active
-include_recipe "virtualbox::webservice"
+include_recipe "#{cookbook_name}::webservice"
 
 # This recipe requires the apache2 cookbook to be available
-include_recipe "apache2"
-include_recipe "apache2::mod_php5"
+# include_recipe "apache2"
+# include_recipe "apache2::mod_php5"
 
-vbox_version = node['virtualbox']['version']
-phpvirtualbox_build = node['virtualbox']['webportal']['versions'][vbox_version]
-phpvirtualbox_version = "#{vbox_version}-#{phpvirtualbox_build}"
+apache2_install "virtualbox-apache2" do
+  apache_user node[cookbook_name]['user']
+  apache_group node[cookbook_name]['group']
+  mpm "prefork"
+  docroot_dir File.dirname node[cookbook_name]['webportal']['installdir']
+end
+service 'apache2' do
+  action :nothing
+end
+apache2_mod_php "virtualbox-apache2"
 
-remote_file "#{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip" do
-  source "http://downloads.sourceforge.net/project/phpvirtualbox/phpvirtualbox-#{phpvirtualbox_version}.zip"
-  mode "0644"
+package ['php-xml', 'php-soap', 'php-json']
+
+directory node[cookbook_name]['webportal']['installdir'] do
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
+  recursive true
 end
 
-package "unzip" do
-  action :install
+git node[cookbook_name]['webportal']['installdir'] do
+  repository "https://github.com/phpvirtualbox/phpvirtualbox.git"
+  action :sync
+  checkout_branch 'develop'
+  enable_checkout false
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
 end
 
-bash "extract-phpvirtualbox" do
-  code <<-EOH
-  cd /tmp
-  rm -rf phpvirtualbox
-  mkdir phpvirtualbox
-  cd phpvirtualbox
-  unzip #{Chef::Config['file_cache_path']}/phpvirtualbox-#{phpvirtualbox_version}.zip
-  mkdir -p #{node['virtualbox']['webportal']['installdir']}
-  mv * #{node['virtualbox']['webportal']['installdir']}
-  cd ..
-  rm -rf phpvirtualbox
-  EOH
+directory "#{node[cookbook_name]['webportal']['installdir']}/.git" do
+  action :delete
+  recursive true
 end
 
-bash "enable-apache2-default-site" do
-  if node['virtualbox']['webportal']['enable-apache2-default-site'] then
-    code <<-EOH
-      if [ ! -f /etc/apache2/sites-enabled/default ]; then
-        ln -s /etc/apache2/sites-available/default /etc/apache2/sites-enabled/default
-      else
-        exit 0
-      fi
-    EOH
-  end
-end
-
-template "#{node['virtualbox']['webportal']['installdir']}/config.php" do
+template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
   source "config.php.erb"
   mode "0644"
+  notifies :restart, "service[vboxweb-service]", :immediately
   notifies :restart, "service[apache2]", :immediately
   variables(
-      :password => data_bag_item('passwords','virtualbox-user')['rawpassword']
+      :password => data_bag_item('passwords','virtualbox-user')['password']
   )
 end
-
-
