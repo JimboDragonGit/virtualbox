@@ -44,7 +44,11 @@ when 'windows'
 
 when 'debian'
   include_recipe "apt"
-  include_recipe "build-essential"
+
+  build_essential 'Install compilation tools' do
+    action :upgrade
+    compile_time true
+  end
 
   package get_packages_dependencies do
      action :install

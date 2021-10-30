@@ -27,5 +27,5 @@ end
 # depends 'windows'
 depends 'apt'
 depends 'apache2'
-depends 'build-essential'
+# depends 'build-essential'
 depends 'vagrant'
