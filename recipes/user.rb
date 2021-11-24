@@ -21,8 +21,14 @@
 # needs to be added.
 chef_gem "unix-crypt" do
   action :upgrade
-  compile_time true
+  compile_time false if respond_to?(:compile_time)
 end
+
+chef_gem 'chef-vault' do
+  compile_time true if respond_to?(:compile_time)
+end
+#
+require 'chef-vault'
 
 ruby_block 'Include unix_crypt to LinuxUser resource' do
   block do
@@ -43,10 +49,21 @@ execute "start zentyal webadmin" do
   command "/usr/bin/zs webadmin start"
 end
 
-user 'virtualbox-user' do
+case ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user'])
+when :normal
+  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'])['sha512_encrypted_password']
+when :encrypted
+  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name))['sha512_encrypted_password']
+when :vault
+  virtualbox_user_password = ChefVault::Item.load("passwords", "virtualbox-user")['sha512_encrypted_password']
+end
+
+# convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
+
+user node[cookbook_name]['user'] do
   username node[cookbook_name]['user']
   gid node[cookbook_name]['group']
-  password UnixCrypt::SHA512.build(data_bag_item('passwords','virtualbox-user')['password'])
+  password virtualbox_user_password
   home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
   shell "/bin/bash"
   system true
