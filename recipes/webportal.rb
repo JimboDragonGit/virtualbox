@@ -63,6 +63,6 @@ template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
   notifies :restart, "service[vboxweb-service]", :immediately
   notifies :restart, "service[apache2]", :immediately
   variables(
-      :password => data_bag_item('passwords','virtualbox-user')['password']
+      :password => data_bag_item('passwords',node[cookbook_name]['user'])['password']
   )
 end
