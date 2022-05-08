@@ -52,7 +52,8 @@ end
 Chef::Log.warn("node[cookbook_name]['user'] = #{node[cookbook_name]['user']}")
 Chef::Log.warn("ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user']) = #{ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user'])}")
 Chef::Log.warn("data_bag_item('cookbook_secret_keys', cookbook_name) = #{data_bag_item('cookbook_secret_keys', cookbook_name)}")
-Chef::Log.warn("data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"]) = #{data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])}")
+Chef::Log.warn("data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)['secret']) = #{data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])}")
+
 case ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user'])
 when :normal
   virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'])['sha512_encrypted_password']
