@@ -21,11 +21,11 @@
 # needs to be added.
 chef_gem "unix-crypt" do
   action :upgrade
-  compile_time false if respond_to?(:compile_time)
+  compile_time true
 end
 
 chef_gem 'chef-vault' do
-  compile_time true if respond_to?(:compile_time)
+  compile_time true
 end
 #
 require 'chef-vault'
