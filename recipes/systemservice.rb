@@ -34,11 +34,7 @@ cookbook_file "/etc/virtualbox/machines_enabled" do
   only_if {not FileTest.exists?("/etc/virtualbox/machines_enabled")}
 end
 
-Chef::Log.warn("node['network'] = #{node['network']}")
-Chef::Log.warn("node['network']['default_interface'] = #{node['network']['default_interface']}")
 host_interface = node[cookbook_name]['default_interface']
-
-Chef::Log.warn("node['network']['interfaces']] = #{node['network']['interfaces']}")
 addresses = node['network']['interfaces'][host_interface]['addresses']
 host_ip = 'unknown'
 addresses.each do |ip, params|
