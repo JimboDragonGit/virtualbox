@@ -47,13 +47,30 @@ module Vbox
       when 'solaris', 'mac_os_x', 'windows'
         vboxversion = "VirtualBox-#{vbox_version.join('.')}-#{node['virtualbox']['releasever']}-"
       when 'debian'
-        vboxversion = "virtualbox-#{vboxversion}-#{node['virtualbox']['releasever']}~#{node['lsb']['id']}~#{node['lsb']['codename']}"
+        vboxversion = "virtualbox-#{vboxversion}-#{node['virtualbox']['releasever']}#{download_id}~#{codename}"
       when 'rhel', 'fedora', 'suse'
         vboxversion = "VirtualBox-#{vboxversion}_#{node['virtualbox']['releasever']}_#{node['lsb']['id']}"
       end
       "#{vboxversion}#{platform_executable}"
     end
 
+    def codename
+      if node['lsb']['codename'] == "focal"
+        "eoan"
+      else
+        node['lsb']['codename']
+      end
+    end
+
+    def download_id
+      if codename == "focal"
+        ".1~#{node['lsb']['id']}"
+      else
+        "~#{node['lsb']['id']}"
+      end
+    end
+    #https://download.virtualbox.org/virtualbox/6.1.28/virtualbox-6.1_6.1.28-147628~Ubuntu~focal_amd64.deb
+    #https://download.virtualbox.org/virtualbox/6.1.34/virtualbox-6.1_6.1.34-150636.1~Ubuntu~eoan_amd64.deb
     #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
     #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
     #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
