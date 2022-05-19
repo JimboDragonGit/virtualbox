@@ -58,8 +58,6 @@ when :vault
   virtualbox_user_password = ChefVault::Item.load("passwords", node[cookbook_name]['user'])['password']
 end
 
-Chef::Log.warn("virtualbox_user_password = #{virtualbox_user_password}")
-
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
 
 user node[cookbook_name]['user'] do
