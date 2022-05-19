@@ -51,11 +51,11 @@ end
 
 case ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user'])
 when :normal
-  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'])['sha512_encrypted_password']
+  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'])['password']
 when :encrypted
-  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])['sha512_encrypted_password']
+  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])['password']
 when :vault
-  virtualbox_user_password = ChefVault::Item.load("passwords", node[cookbook_name]['user'])['sha512_encrypted_password']
+  virtualbox_user_password = ChefVault::Item.load("passwords", node[cookbook_name]['user'])['password']
 end
 
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
@@ -63,7 +63,7 @@ end
 user node[cookbook_name]['user'] do
   username node[cookbook_name]['user']
   gid node[cookbook_name]['group']
-  password virtualbox_user_password
+  password UnixCrypt::SHA512.build(virtualbox_user_password)
   home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
   shell "/bin/bash"
   system true
