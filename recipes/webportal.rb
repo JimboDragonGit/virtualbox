@@ -60,8 +60,8 @@ end
 template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
   source "config.php.erb"
   mode "0644"
-  notifies :restart, "service[vboxweb-service]", :immediately
   notifies :restart, "service[apache2]", :immediately
+  notifies :restart, "service[vboxweb-service]", :immediately
   variables(
       :password => data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])['password']
   )
