@@ -18,24 +18,28 @@
 #
 
 # The phpvirtualbox webportal requires the Virtualbox webservice api to be active
-include_recipe "#{cookbook_name}::webservice"
+include_recipe '::webservice'
 
 # This recipe requires the apache2 cookbook to be available
-# include_recipe "apache2"
+# include_recipe 'apache2'
 # include_recipe "apache2::mod_php5"
 
-apache2_install "virtualbox-apache2" do
-  apache_user node[cookbook_name]['user']
-  apache_group node[cookbook_name]['group']
-  mpm "prefork"
-  docroot_dir File.dirname node[cookbook_name]['webportal']['installdir']
-end
 service 'apache2' do
+  service_name lazy { apache_platform_service_name }
+  supports restart: true, status: true, reload: true
   action :nothing
 end
-apache2_mod_php "virtualbox-apache2"
 
-package ['php-xml', 'php-soap', 'php-json']
+apache2_install 'virtualbox-apache2' do
+  apache_user node[cookbook_name]['user']
+  apache_group node[cookbook_name]['group']
+  mpm 'prefork'
+  docroot_dir File.dirname node[cookbook_name]['webportal']['installdir']
+end
+
+apache2_mod_php 'virtualbox-apache2'
+
+package %w(php-xml php-soap php-json)
 
 directory node[cookbook_name]['webportal']['installdir'] do
   user node[cookbook_name]['user']
@@ -44,7 +48,7 @@ directory node[cookbook_name]['webportal']['installdir'] do
 end
 
 git node[cookbook_name]['webportal']['installdir'] do
-  repository "https://github.com/phpvirtualbox/phpvirtualbox.git"
+  repository 'https://github.com/phpvirtualbox/phpvirtualbox.git'
   action :sync
   checkout_branch 'develop'
   enable_checkout false
@@ -58,11 +62,9 @@ directory "#{node[cookbook_name]['webportal']['installdir']}/.git" do
 end
 
 template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
-  source "config.php.erb"
-  mode "0644"
-  notifies :restart, "service[apache2]", :immediately
-  notifies :restart, "service[vboxweb-service]", :immediately
+  source 'config.php.erb'
+  mode '0644'
   variables(
-      :password => data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])['password']
+      password: data_bag_item('passwords', node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)['secret'])['password']
   )
 end

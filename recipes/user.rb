@@ -19,7 +19,7 @@
 
 # For the user to be created successfully, a data bag item with the MD5 hashed password
 # needs to be added.
-chef_gem "unix-crypt" do
+chef_gem 'unix-crypt' do
   action :upgrade
   compile_time true
 end
@@ -39,23 +39,23 @@ ruby_block 'Include unix_crypt to LinuxUser resource' do
   compile_time true
 end
 
-execute "stop zentyal webadmin" do
+execute 'stop zentyal webadmin' do
   action :nothing
-  command "/usr/bin/zs webadmin stop"
+  command '/usr/bin/zs webadmin stop'
 end
 
-execute "start zentyal webadmin" do
+execute 'start zentyal webadmin' do
   action :nothing
-  command "/usr/bin/zs webadmin start"
+  command '/usr/bin/zs webadmin start'
 end
 
 case ChefVault::Item.data_bag_item_type('passwords', node[cookbook_name]['user'])
 when :normal
   virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'])['password']
 when :encrypted
-  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)["secret"])['password']
+  virtualbox_user_password = data_bag_item('passwords',node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)['secret'])['password']
 when :vault
-  virtualbox_user_password = ChefVault::Item.load("passwords", node[cookbook_name]['user'])['password']
+  virtualbox_user_password = ChefVault::Item.load('passwords', node[cookbook_name]['user'])['password']
 end
 
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
@@ -65,12 +65,13 @@ user node[cookbook_name]['user'] do
   gid node[cookbook_name]['group']
   password UnixCrypt::SHA512.build(virtualbox_user_password)
   home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
-  shell "/bin/bash"
+  shell '/bin/bash'
   system true
   manage_home true
   notifies :stop, 'service[apache2]', :before if node[cookbook_name]['user'] == default_apache_user
-  if node['packages'].include?("zentyal-core")
+  if node['packages'].include?('zentyal-core')
     notifies :run, 'execute[stop zentyal webadmin]', :before
     notifies :run, 'execute[start zentyal webadmin]', :delayed
   end
+  notifies :start, 'service[apache2]', :immediately if node[cookbook_name]['user'] == default_apache_user
 end

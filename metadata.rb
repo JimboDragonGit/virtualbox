@@ -19,13 +19,8 @@ issues_url 'https://github.com/jimbodragon/virtualbox/issues'
 #
 source_url 'https://github.com/jimbodragon/virtualbox'
 
-%w{ubuntu debian centos redhat mac_os_x windows fedora opensuse zentyal}.each do |os|
+%w(ubuntu debian centos redhat mac_os_x windows fedora opensuse zentyal).each do |os|
   supports os
 end
 
-# depends 'dmg'
-# depends 'windows'
-depends 'apt'
 depends 'apache2'
-# depends 'build-essential'
-depends 'vagrant'

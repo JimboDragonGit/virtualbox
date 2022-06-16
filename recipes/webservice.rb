@@ -17,20 +17,20 @@
 # limitations under the License.
 #
 
-include_recipe "#{cookbook_name}::user"
+include_recipe "#{cookbook_name}::systemservice"
 
-template "/etc/vbox/vbox.cfg" do
-  source "vbox.cfg.erb"
+template '/etc/vbox/vbox.cfg' do
+  source 'vbox.cfg.erb'
 end
 
-directory "vboxweb-service log folder" do
+directory 'vboxweb-service log folder' do
   path node[cookbook_name]['webservice']['log']['location']
   owner node[cookbook_name]['user']
   group node[cookbook_name]['group']
   mode '0755'
 end
 
-directory "/var/www" do
+directory '/var/www' do
   owner node[cookbook_name]['user']
   group node[cookbook_name]['group']
   mode '0755'
@@ -45,6 +45,6 @@ end
 #   environment ({'HOME' => "/home/#{node[cookbook_name]['user']}"})
 # end
 
-service "vboxweb-service" do
+service 'vboxweb-service' do
   action [:enable, :start]
 end

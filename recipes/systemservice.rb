@@ -19,19 +19,20 @@
 
 include_recipe "#{cookbook_name}::user"
 
-cookbook_file "/etc/init.d/vboxcontrol" do
-  source "vboxcontrol"
-  mode "0755"
+template '/etc/init.d/vboxcontrol' do
+  source 'vboxcontrol.erb'
+  mode '0755'
+  variables(user: node[cookbook_name]['user'])
 end
 
-directory "/etc/virtualbox" do
-  mode "0755"
+directory '/etc/virtualbox' do
+  mode '0755'
 end
 
-cookbook_file "/etc/virtualbox/machines_enabled" do
-  source "machines_enabled"
-  mode "0644"
-  only_if {not FileTest.exists?("/etc/virtualbox/machines_enabled")}
+cookbook_file '/etc/virtualbox/machines_enabled' do
+  source 'machines_enabled'
+  mode '0644'
+  not_if FileTest.exists?('/etc/virtualbox/machines_enabled')
 end
 
 host_interface = node[cookbook_name]['default_interface']
@@ -41,15 +42,15 @@ addresses.each do |ip, params|
   host_ip = ip if params['family'].eql?('inet')
 end
 
-template "/etc/virtualbox/config" do
-  source "config.erb"
-  mode "0644"
+template '/etc/virtualbox/config' do
+  source 'config.erb'
+  mode '0644'
   variables(
-      :host_interface => host_interface,
-      :host_ip => host_ip
+      host_interface: host_interface,
+      host_ip: host_ip
   )
 end
 
-service "vboxcontrol" do
+service 'vboxcontrol' do
   action [:enable, :start]
 end

@@ -27,7 +27,7 @@ run_by_init() {
 ################################################################################
 # INITIAL CONFIGURATION
 VBOXDIR="/etc/virtualbox"
-VM_USER="root"
+VM_USER="<%= @user %>"
 
 export PATH="${PATH:+$PATH:}/bin:/usr/bin:/usr/sbin:/sbin"
 
@@ -69,7 +69,7 @@ case "$1" in
         # NOTE: this stops all running VM's. Not just the ones listed in the
         # config
         $SU "$VBOXMANAGE list runningvms" | while read VM; do
-	    VM=`echo $VM | cut -f1 -d ' ' -`
+	        VM=`echo $VM | cut -f1 -d ' ' -`
             log_action_msg "Shutting down VM: $VM ..."
             $SU "$VBOXMANAGE controlvm \"$VM\" savestate"
         done

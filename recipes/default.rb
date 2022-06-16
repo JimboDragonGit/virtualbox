@@ -39,22 +39,26 @@ when 'windows'
     source node[cookbook_name]['url']
     checksum vbox_sha256sum
     installer_type :custom
-    options "-s"
+    options '-s'
   end
 
 when 'debian'
-  include_recipe "apt"
+  apt_update 'virtualbox_debian' do
+    ignore_failure true
+    action :update
+  end
 
-  build_essential 'Install compilation tools' do
-    action :upgrade
-    compile_time true
+  build_essential 'Install compilation tools'
+
+  package "linux-headers-#{node['kernel']['release']}" do
+    action :install
   end
 
   package get_packages_dependencies do
-     action :install
+    action :install
   end
 
-  remote_file '/tmp/virtualbox.deb' do
+  remote_file "#{Chef::Config[:file_cache_path]}/virtualbox.deb" do
     source node[cookbook_name]['url']
     action :create
     checksum vbox_sha256sum
@@ -62,18 +66,18 @@ when 'debian'
 
   dpkg_package vbox_package_name do
     action :install
-    source "/tmp/virtualbox.deb"
+    source "#{Chef::Config[:file_cache_path]}/virtualbox.deb"
   end
   package 'dkms'
 
-  remote_file "/tmp/#{node[cookbook_name]['ext_pack_name']}" do
+  remote_file "#{::File.join(Chef::Config[:file_cache_path], node[cookbook_name]['ext_pack_name'])}" do
     source node[cookbook_name]['ext_pack_url']
     action :create
     checksum extpack_sha256sum
   end
   execute 'Install Oracle VM VirtualBox Extension Pack' do
-    command "echo 'y' | /usr/bin/vboxmanage extpack install /tmp/#{node[cookbook_name]['ext_pack_name']}"
-    not_if is_extpack_installed?("Oracle VM VirtualBox Extension Pack").to_s
+    command "echo 'y' | /usr/bin/vboxmanage extpack install #{::File.join(Chef::Config[:file_cache_path], node[cookbook_name]['ext_pack_name'])}"
+    not_if is_extpack_installed?('Oracle VM VirtualBox Extension Pack').to_s
   end
 
   execute 'Loading kernel' do

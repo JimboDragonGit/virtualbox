@@ -162,21 +162,19 @@ module Vbox
 
     def get_packages_dependencies
       case node['platform_family']
-      when 'mac_os_x'
-      when 'windows'
+      when 'mac_os_x', 'windows', 'rhel', 'fedora', 'suse'
+        nil
       when 'debian'
         packages = %w(libsdl1.2debian libcaca0 libxkbcommon-x11-0 libpulse0 libasyncns0 libsndfile1 libflac8 libqt5x11extras5 libqt5widgets5 libqt5printsupport5 libqt5opengl5 libqt5gui5 libqt5dbus5 libqt5network5 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libqt5core5a)
-        case node['platform']
-        when 'ubuntu'
+        if platform?('ubuntu')
           case node['platform_version']
-          when '18.04'
-            packages.append 'libvpx5', 'libdouble-conversion1', "libcurl4", "libopus0", "libxt6"
+          when '18.04', '20.04'
+            packages.append 'libvpx5', 'libdouble-conversion1', 'libcurl4', 'libopus0', 'libxt6'
           when '16.04'
             packages.append 'libvpx3', 'libdouble-conversion1v5', 'libcurl3', 'libopus0', 'libxcursor1', 'libxt6'
           end
         end
         packages
-      when 'rhel', 'fedora', 'suse'
       end
     end
   end
