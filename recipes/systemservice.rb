@@ -54,3 +54,19 @@ end
 service 'vboxcontrol' do
   action [:enable, :start]
 end
+
+execute 'enable virtualbox autostart' do
+  command "VBoxManage setproperty autostartdbpath /virtualmachines/vbox/autostartdbpath"
+end
+
+directory '/virtualmachines' do
+  mode '0777'
+end
+
+directory '/virtualmachines/vbox' do
+  mode '0777'
+end
+
+directory '/virtualmachines/vbox/autostartdbpath' do
+  mode '0777'
+end
