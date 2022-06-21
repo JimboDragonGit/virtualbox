@@ -20,3 +20,8 @@
 # Settings for integrating virtualbox as a system service, automatically rebooting VMs at host startup
 default['virtualbox']['user'] = default_apache_user
 default['virtualbox']['group'] = default_apache_group
+
+default['virtualbox']['userdatabag'] = 'users'
+default['virtualbox']['secretdatabag'] = 'secret_databag_bag'
+default['virtualbox']['secretdatabagitem'] = 'secret_item'
+default['virtualbox']['secretdatabagkey'] = 'secret'

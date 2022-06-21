@@ -18,6 +18,8 @@
 #
 
 # The phpvirtualbox webportal requires the Virtualbox webservice api to be active
+
+include Vbox::Helpers
 include_recipe '::webservice'
 
 # This recipe requires the apache2 cookbook to be available
@@ -25,7 +27,7 @@ include_recipe '::webservice'
 # include_recipe "apache2::mod_php5"
 
 service 'apache2' do
-  service_name lazy { apache_platform_service_name }
+  service_name apache_platform_service_name
   supports restart: true, status: true, reload: true
   action :nothing
 end
@@ -64,7 +66,29 @@ end
 template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
   source 'config.php.erb'
   mode '0644'
+
+  case ChefVault::Item.data_bag_item_type(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])
+  when :normal
+    password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
+  when :encrypted
+    password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'], data_bag_item(node[cookbook_name]['secretdatabag'], node[cookbook_name]['secretdatabagitem'])[node[cookbook_name]['secretdatabagkey']])['password']
+  when :vault
+    password = ChefVault::Item.load(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
+  end
+
   variables(
-      password: data_bag_item('passwords', node[cookbook_name]['user'], data_bag_item('cookbook_secret_keys', cookbook_name)['secret'])['password']
+    password: password
   )
+end
+
+service 'apache2' do
+  service_name apache_platform_service_name
+  supports restart: true, status: true, reload: true
+  action :enable
+end
+
+service 'apache2' do
+  service_name apache_platform_service_name
+  supports restart: true, status: true, reload: true
+  action :restart
 end

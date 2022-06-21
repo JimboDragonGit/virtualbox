@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include Vbox::Helpers
 include_recipe "#{cookbook_name}::systemservice"
 
 template '/etc/vbox/vbox.cfg' do

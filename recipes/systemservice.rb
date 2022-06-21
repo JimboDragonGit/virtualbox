@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include Vbox::Helpers
 include_recipe "#{cookbook_name}::user"
 
 template '/etc/init.d/vboxcontrol' do
