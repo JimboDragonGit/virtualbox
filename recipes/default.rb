@@ -18,6 +18,7 @@
 # limitations under the License.
 #
 
+include Vbox::Helpers
 vbox_package_name = "Oracle VM VirtualBox #{node[cookbook_name]['version']}-#{node[cookbook_name]['releasever']}"
 
 vbox_sha256sum = vbox_sha256sum(node[cookbook_name]['url'])

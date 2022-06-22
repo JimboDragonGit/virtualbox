@@ -3,19 +3,18 @@ require 'uri'
 
 module Vbox
   module Helpers
-
     include Apache2::Cookbook::Helpers
 
     # Retrieves the SHA256 checksum from the VirtualBox downloads
     # site's list of checksums.
     def vbox_sha256sum(url)
       filename = File.basename(URI.parse(url).path)
-      urlbase = url.gsub("#{filename}", "")
-      sha256sum = ""
+      urlbase = url.gsub("#{filename}", '')
+      sha256sum = ''
       URI.open("#{urlbase}/SHA256SUMS").each do |line|
-        sha256sum = line.split(" ")[0] if line =~ /#{filename}/
+        sha256sum = line.split(' ')[0] if line =~ /#{filename}/
       end
-      return sha256sum
+      sha256sum
     end
 
     # totally assumes the version is the directory in the URL where
@@ -23,14 +22,13 @@ module Vbox
     # http://download.virtualbox.org/virtualbox/4.2.8/VirtualBox-4.2.8-83876-Win.exe
     # returning "4.2.8"
     def vbox_version(url)
-      version = File.dirname(URI.parse(url).path).split('/').last
-      return version
+      ::File.dirname(URI.parse(url).path).split('/').last
     end
 
     def segment_version
       gem_version = Gem::Version.new(node['virtualbox']['version']).segments
       if gem_version.count > 3
-        Chef::Application.fatal("node['virtualbox']['version'] must have maximum of 3 dots")
+        Chef::Application.fatal("#{node['virtualbox']['version']} must have maximum of 3 dots")
       end
       major = gem_version[0]
       feature = gem_version[1] || 0
@@ -55,56 +53,38 @@ module Vbox
     end
 
     def codename
-      if node['lsb']['codename'] == "focal"
-        "eoan"
+      if node['lsb']['codename'] == 'focal'
+        'eoan'
       else
         node['lsb']['codename']
       end
     end
 
     def download_id
-      if codename == "focal"
+      if codename == 'focal'
         ".1~#{node['lsb']['id']}"
       else
         "~#{node['lsb']['id']}"
       end
     end
-    #https://download.virtualbox.org/virtualbox/6.1.28/virtualbox-6.1_6.1.28-147628~Ubuntu~focal_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.34/virtualbox-6.1_6.1.34-150636.1~Ubuntu~eoan_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~bionic_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~eoan_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Debian~buster_amd64.deb
-    #https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Debian~jessie_amd64.deb
-
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1-6.1.16_140961_fedora32-1.x86_64.rpm
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1-6.1.16_140961_fedora31-1.x86_64.rpm
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1-6.1.16_140961_el8-1.x86_64.rpm
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1-6.1.16_140961_el6-1.x86_64.rpm
-
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1-6.1.16_140961_openSUSE150-1.x86_64.rpm
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-SunOS.tar.gz
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-OSX.dmg
-    #https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-Win.exe
 
     def platform_executable
       case node['platform_family']
       when 'windows'
-        "Win.exe"
+        'Win.exe'
       when 'solaris'
-        "SunOS.tar.gz"
+        'SunOS.tar.gz'
       when 'mac_os_x'
-        "OSX.dmg"
+        'OSX.dmg'
       when 'debian'
-        "_amd64.deb"
+        '_amd64.deb'
       when 'rhel', 'fedora', 'suse'
-        "-1.x86_64.rpm"
+        '-1.x86_64.rpm'
       end
     end
 
     def is_virtualbox_installed?
-      vbox_version = segment_version[0,2].join('.')
+      vbox_version = segment_version[0, 2].join('.')
       Chef::Log.info "Checking if package virtualbox-#{vbox_version} is installed"
       node['packages'].exist?("virtualbox-#{vbox_version}")
     end
@@ -112,7 +92,7 @@ module Vbox
     def is_extpack_installed?(extpack_name, version = node['virtualbox']['version'], revision = node['virtualbox']['releasever'])
       Chef::Log.info "Checking if extpack #{extpack_name} at version #{version} and revision #{revision} is installed"
       if is_virtualbox_installed?
-        Chef::Log.info %x(/usr/bin/vboxmanage list extpacks | grep -A 2 '#{extpack_name}')
+        Chef::Log.info %x(`/usr/bin/vboxmanage list extpacks | grep -A 2 '#{extpack_name}'´)
         true
       else
         false
@@ -124,40 +104,26 @@ module Vbox
     end
 
     def php_version
-      case node['platform_family']
-      when 'debian'
-        phpversion = %x(apt-cache madison #{apache_mod_php_package} | cut -d ':' -f 2 | cut -d '+' -f 1 | head -n 1)
+      if platform_family?('debian')
+        phpversion = %x(`apt-cache madison #{apache_mod_php_package} | cut -d ':' -f 2 | cut -d '+' -f 1 | head -n 1`)
         phpversion.chomp
       end
     end
 
     def php_xml_package_name
-      case node['platform_family']
-      when 'debian'
-        "php#{php_version.chomp}-xml"
-      end
+      "php#{php_version.chomp}-xml" if platform_family?('debian')
     end
 
     def php_soap_package_name
-      case node['platform_family']
-      when 'debian'
-        "php#{php_version.chomp}-soap"
-      end
+      "php#{php_version.chomp}-soap" if platform_family?('debian')
     end
 
     def php_json_package_name
-      case node['platform_family']
-      when 'debian'
-        "php#{php_version.chomp}-json"
-      end
+      "php#{php_version.chomp}-json" if platform_family?('debian')
     end
 
     def is_vbox_kernel_loaded?
-      case node['platform_family']
-      when 'debian'
-        # lsmod | grep -q "vboxdrv[^_-]
-        system("lsmod | grep vboxdrv")
-      end
+      system('lsmod | grep vboxdrv') if platform_family?('debian')
     end
 
     def get_packages_dependencies
@@ -179,8 +145,3 @@ module Vbox
     end
   end
 end
-
-Chef::Node.send(:include, Vbox::Helpers)
-Chef::Recipe.send(:include, Vbox::Helpers)
-Chef::Resource::Execute.send(:include, Vbox::Helpers)
-Chef::Resource::User.send(:include, Vbox::Helpers)
