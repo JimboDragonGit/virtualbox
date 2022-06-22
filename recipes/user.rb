@@ -40,16 +40,6 @@ ruby_block 'Include unix_crypt to LinuxUser resource' do
   compile_time true
 end
 
-execute 'stop zentyal webadmin' do
-  action :nothing
-  command '/usr/bin/zs webadmin stop'
-end
-
-execute 'start zentyal webadmin' do
-  action :nothing
-  command '/usr/bin/zs webadmin start'
-end
-
 case ChefVault::Item.data_bag_item_type(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])
 when :normal
   virtualbox_user_password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
