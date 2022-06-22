@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-# extend Vbox::Helpers
+extend Vbox::Helpers
 
 default['virtualbox']['version'] = '6.1.34'
 default['virtualbox']['releasever'] = '150636'
