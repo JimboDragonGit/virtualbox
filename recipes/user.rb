@@ -54,7 +54,7 @@ case ChefVault::Item.data_bag_item_type(node[cookbook_name]['userdatabag'], node
 when :normal
   virtualbox_user_password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
 when :encrypted
-  virtualbox_user_password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'], data_bag_item(node[cookbook_name]['secretdatabag'], node[cookbook_name]['secretdatabag'])[node[cookbook_name]['secretdatabagkey']])['password']
+  virtualbox_user_password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'], data_bag_item(node[cookbook_name]['secretdatabag'], node[cookbook_name]['secretdatabagitem'])[node[cookbook_name]['secretdatabagkey']])['password']
 when :vault
   virtualbox_user_password = ChefVault::Item.load(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
 end
