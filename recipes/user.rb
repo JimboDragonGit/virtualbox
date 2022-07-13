@@ -29,7 +29,7 @@ chef_gem 'chef-vault' do
 end
 
 require 'chef-vault'
-include Vbox::Helpers
+extend Vbox::Helpers
 
 ruby_block 'Include unix_crypt to LinuxUser resource' do
   block do
@@ -47,15 +47,16 @@ when :encrypted
   virtualbox_user_password = data_bag_item(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'], data_bag_item(node[cookbook_name]['secretdatabag'], node[cookbook_name]['secretdatabagitem'])[node[cookbook_name]['secretdatabagkey']])['password']
 when :vault
   virtualbox_user_password = ChefVault::Item.load(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])['password']
-end
+end unless data_bag(node[cookbook_name]['userdatabag']).nil? || data_bag(node[cookbook_name]['userdatabag']).empty?
 
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
 
 user node[cookbook_name]['user'] do
+  extend Apache2::Cookbook::Helpers
   username node[cookbook_name]['user']
   gid node[cookbook_name]['group']
   password UnixCrypt::SHA512.build(virtualbox_user_password)
-  home node[cookbook_name]['user'] == default_apache_user ? default_apache_user_home : "/home/#{node[cookbook_name]['user']}"
+  home node[cookbook_name]['user'] == default_apache_user ? default_docroot_dir : "/home/#{node[cookbook_name]['user']}"
   shell '/bin/bash'
   system true
   manage_home true

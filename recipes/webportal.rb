@@ -19,7 +19,7 @@
 
 # The phpvirtualbox webportal requires the Virtualbox webservice api to be active
 
-include Vbox::Helpers
+extend Vbox::Helpers
 include_recipe '::webservice'
 
 # This recipe requires the apache2 cookbook to be available
