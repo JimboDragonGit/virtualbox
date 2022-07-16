@@ -60,4 +60,5 @@ user node[cookbook_name]['user'] do
   shell '/bin/bash'
   system true
   manage_home true
+  notifies :stop, "service[#{apache_platform_service_name}]", :before if node[cookbook_name]['user'] == default_apache_user
 end

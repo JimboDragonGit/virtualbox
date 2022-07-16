@@ -28,7 +28,7 @@ include_recipe '::webservice'
 
 service 'apache2' do
   service_name apache_platform_service_name
-  supports restart: true, status: true, reload: true
+  supports restart: true, status: true
   action :nothing
 end
 

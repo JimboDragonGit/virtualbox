@@ -33,7 +33,7 @@ end
 cookbook_file '/etc/virtualbox/machines_enabled' do
   source 'machines_enabled'
   mode '0644'
-  not_if FileTest.exists?('/etc/virtualbox/machines_enabled')
+  not_if FileTest.exists?('/etc/virtualbox/machines_enabled').to_s
 end
 
 host_interface = node[cookbook_name]['default_interface']
