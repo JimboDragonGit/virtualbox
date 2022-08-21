@@ -29,16 +29,8 @@ chef_gem 'chef-vault' do
 end
 
 require 'chef-vault'
+require 'unix_crypt'
 extend Vbox::Helpers
-
-ruby_block 'Include unix_crypt to LinuxUser resource' do
-  block do
-    require 'unix_crypt'
-    Chef::Resource::User.send(:include, UnixCrypt)
-  end
-  action :run
-  compile_time true
-end
 
 case ChefVault::Item.data_bag_item_type(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])
 when :normal
@@ -52,13 +44,14 @@ end unless data_bag(node[cookbook_name]['userdatabag']).nil? || data_bag(node[co
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
 
 user node[cookbook_name]['user'] do
-  extend Apache2::Cookbook::Helpers
+  extend Vbox::Helpers
+  extend UnixCrypt
   username node[cookbook_name]['user']
   gid node[cookbook_name]['group']
   password UnixCrypt::SHA512.build(virtualbox_user_password)
-  home node[cookbook_name]['user'] == default_apache_user ? default_docroot_dir : "/home/#{node[cookbook_name]['user']}"
+  # home node[cookbook_name]['user'] == default_apache_user ? default_docroot_dir : "/home/#{node[cookbook_name]['user']}"
   shell '/bin/bash'
   system true
   manage_home true
-  notifies :stop, "service[#{apache_platform_service_name}]", :before if node[cookbook_name]['user'] == default_apache_user
+  # notifies :stop, "service[#{apache_platform_service_name}]", :before if node[cookbook_name]['user'] == default_apache_user
 end

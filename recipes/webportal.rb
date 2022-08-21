@@ -33,37 +33,37 @@ service 'apache2' do
 end
 
 apache2_install 'virtualbox-apache2' do
-  apache_user node[cookbook_name]['user']
-  apache_group node[cookbook_name]['group']
+  apache_user default_apache_user
+  apache_group default_apache_group
   mpm 'prefork'
-  docroot_dir File.dirname node[cookbook_name]['webportal']['installdir']
+  docroot_dir default_docroot_dir
 end
 
 apache2_mod_php 'virtualbox-apache2'
 
 package %w(php-xml php-soap php-json)
 
-directory node[cookbook_name]['webportal']['installdir'] do
-  user node[cookbook_name]['user']
-  group node[cookbook_name]['group']
+directory ::File.join(default_docroot_dir,'phpvirtualbox') do
+  user default_apache_user
+  group default_apache_group
   recursive true
 end
 
-git node[cookbook_name]['webportal']['installdir'] do
+git ::File.join(default_docroot_dir,'phpvirtualbox') do
   repository 'https://github.com/phpvirtualbox/phpvirtualbox.git'
   action :sync
   checkout_branch 'develop'
   enable_checkout false
-  user node[cookbook_name]['user']
-  group node[cookbook_name]['group']
+  user default_apache_user
+  group default_apache_group
 end
 
-directory "#{node[cookbook_name]['webportal']['installdir']}/.git" do
+directory ::File.join(::File.join(default_docroot_dir, 'phpvirtualbox'), '.git') do
   action :delete
   recursive true
 end
 
-template "#{node[cookbook_name]['webportal']['installdir']}/config.php" do
+template ::File.join(::File.join(default_docroot_dir, 'phpvirtualbox'), 'config.php') do
   source 'config.php.erb'
   mode '0644'
 

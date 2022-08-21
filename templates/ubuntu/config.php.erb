@@ -9,7 +9,7 @@
 class phpVBoxConfig {
 
 /* Username / Password for system user that runs VirtualBox */
-var $username = '<%= node['virtualbox']['user'] %>';
+var $username = '<%= @user %>';
 var $password = '<%= @password %>';
 
 /* SOAP URL of vboxwebsrv (not phpVirtualBox's URL) */

@@ -9,7 +9,7 @@ VBOXWEB_HOST=localhost
 VBOXWEB_PORT=18083
 
 # This setting defines the user as which vboxwebsrv will run. This setting is mandatory.
-VBOXWEB_USER=<%= node[:virtualbox][:user] %>
+VBOXWEB_USER=<%= @user %>
 
 # vboxweb-service env var || vboxwebsrv cli arg   || description
 # VBOXWEB_TIMEOUT         |  --timeout, -t        |  Session timeout in seconds; 0 = disable timeouts (300).
@@ -33,19 +33,31 @@ VBOXWEB_VERBOSE=true
 
 # vboxweb-service env var || vboxwebsrv cli arg   || description
 # VBOXWEB_LOGFILE         |  --logfile, -F        |  Name of file to write log to (no file).
-VBOXWEB_LOGFILE=<%= node[:virtualbox][:webservice][:log][:location] %>/vboxwebsrv.log
+VBOXWEB_LOGFILE=<%= @webservice_log[:location] %>/vboxwebsrv.log
 
 # vboxweb-service env var || vboxwebsrv cli arg   || description
 # VBOXWEB_LOGROTATE       |  --logrotate, -R      |  Number of log files (0 disables log rotation).
-VBOXWEB_LOGROTATE=<%= node[:virtualbox][:webservice][:log][:rotate] %>
+VBOXWEB_LOGROTATE=<%= @webservice_log[:rotate] %>
 
 # vboxweb-service env var || vboxwebsrv cli arg   || description
 # VBOXWEB_LOGSIZE         |  --logsize, -S        |  Maximum size of a log file to trigger rotation (bytes).
-VBOXWEB_LOGSIZE=<%= node[:virtualbox][:webservice][:log][:size] %>
+VBOXWEB_LOGSIZE=<%= @webservice_log[:size] %>
 
 # vboxweb-service env var || vboxwebsrv cli arg   || description
 # VBOXWEB_LOGINTERVAL     |  --loginterval, -I    |  Maximum time interval to trigger log rotation (seconds).
-VBOXWEB_LOGINTERVAL=<%= node[:virtualbox][:webservice][:log][:interval] %>
+VBOXWEB_LOGINTERVAL=<%= @webservice_log[:interval] %>
 
 # This option defines the location of the vboxwebsrv binary (/usr/lib/virtualbox by default).
 # INSTALL_DIR=VALUE
+
+####################################################################################
+# Starting virtual machines during system boot
+#
+# This option defines the location of the autostartdbpath folder (undefined by default).
+# VBOXAUTOSTART_DB=VALUE
+VBOXAUTOSTART_DB=<%= @autostart_db_folder %>
+
+# This option defines the location of the autostart configuration file use for user policies (undefined by default).
+# VBOXAUTOSTART_CONFIG=VALUE
+VBOXAUTOSTART_CONFIG=<%= @autostart_config_file %>
+####################################################################################

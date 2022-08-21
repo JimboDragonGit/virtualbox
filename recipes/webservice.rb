@@ -20,10 +20,6 @@
 extend Vbox::Helpers
 include_recipe "#{cookbook_name}::systemservice"
 
-template '/etc/vbox/vbox.cfg' do
-  source 'vbox.cfg.erb'
-end
-
 directory 'vboxweb-service log folder' do
   path node[cookbook_name]['webservice']['log']['location']
   owner node[cookbook_name]['user']
@@ -31,11 +27,11 @@ directory 'vboxweb-service log folder' do
   mode '0755'
 end
 
-directory '/var/www' do
-  owner node[cookbook_name]['user']
-  group node[cookbook_name]['group']
-  mode '0755'
-end
+# directory '/var/www' do
+#   owner node[cookbook_name]['user']
+#   group node[cookbook_name]['group']
+#   mode '0755'
+# end
 
 # It is very hard to get vboxwebsrv to work correctly with password authentication
 # If anyone can get this working, feel free to submit a changed cookbook!

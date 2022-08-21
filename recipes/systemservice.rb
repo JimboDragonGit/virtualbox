@@ -18,23 +18,16 @@
 #
 
 extend Vbox::Helpers
+
+def vbox_dir(dirname)
+  directory dirname do
+    mode '1775'
+    recursive true
+    user node[cookbook_name]['user']
+    group node[cookbook_name]['group']
+  end
+end
 include_recipe "#{cookbook_name}::user"
-
-template '/etc/init.d/vboxcontrol' do
-  source 'vboxcontrol.erb'
-  mode '0755'
-  variables(user: node[cookbook_name]['user'])
-end
-
-directory '/etc/virtualbox' do
-  mode '0755'
-end
-
-cookbook_file '/etc/virtualbox/machines_enabled' do
-  source 'machines_enabled'
-  mode '0644'
-  not_if FileTest.exists?('/etc/virtualbox/machines_enabled').to_s
-end
 
 host_interface = node[cookbook_name]['default_interface']
 addresses = node['network']['interfaces'][host_interface]['addresses']
@@ -43,31 +36,58 @@ addresses.each do |ip, params|
   host_ip = ip if params['family'].eql?('inet')
 end
 
-template '/etc/virtualbox/config' do
-  source 'config.erb'
-  mode '0644'
+vbox_dir node[cookbook_name]['config_folder']
+vbox_dir node[cookbook_name]['autostartfolder']
+vbox_dir node[cookbook_name]['autostart_db_folder']
+
+cookbook_file node[cookbook_name]['autostart_machines_file'] do
+  source 'machines_enabled'
+  mode '0664'
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
+  not_if FileTest.exists?(node[cookbook_name]['autostart_machines_file']).to_s
+end
+
+template node[cookbook_name]['vboxcontrol_config_file'] do
+  source 'vboxcontrol.conf.erb'
+  mode '0664'
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
   variables(
       host_interface: host_interface,
-      host_ip: host_ip
-  )
+      host_ip: host_ip,
+      user: node[cookbook_name]['user']
+    )
+end
+
+template node[cookbook_name]['config_file'] do
+  source 'vbox.cfg.erb'
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
+  mode '0664'
+  variables(user: node[cookbook_name]['user'], webservice_log: node[cookbook_name]['webservice']['log'], autostart_config_file: node[cookbook_name]['autostart_config_file'], autostart_db_folder: node[cookbook_name]['autostart_db_folder'])
+end
+
+template node[cookbook_name]['autostart_config_file'] do
+  source 'vboxautostart.conf.erb'
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
+  mode '0664'
+  variables(users: node[cookbook_name]['autostart_users'])
+end
+
+template '/etc/init.d/vboxcontrol' do
+  source 'vboxcontrol.erb'
+  mode '0755'
+  variables(user: node[cookbook_name]['user'], autostart_machines_file: node[cookbook_name]['autostart_machines_file'], vboxcontrol_config_file: node[cookbook_name]['vboxcontrol_config_file'])
+end
+
+execute 'enable virtualbox autostart' do
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
+  command "VBoxManage setproperty autostartdbpath #{node[cookbook_name]['autostart_db_folder']}"
 end
 
 service 'vboxcontrol' do
   action [:enable, :start]
-end
-
-execute 'enable virtualbox autostart' do
-  command "VBoxManage setproperty autostartdbpath /virtualmachines/vbox/autostartdbpath"
-end
-
-directory '/virtualmachines' do
-  mode '0777'
-end
-
-directory '/virtualmachines/vbox' do
-  mode '0777'
-end
-
-directory '/virtualmachines/vbox/autostartdbpath' do
-  mode '0777'
 end

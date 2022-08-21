@@ -1,0 +1,8 @@
+# Default policy is to deny starting a VM, the other option is "allow".
+default_policy = deny
+<% @users.each do |autostart_user| %>
+
+<%= autostart_user %> = {
+    allow = true
+}
+<% end %>

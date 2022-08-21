@@ -26,15 +26,13 @@ run_by_init() {
 
 ################################################################################
 # INITIAL CONFIGURATION
-VBOXDIR="/etc/virtualbox"
-VM_USER="<%= @user %>"
 
 export PATH="${PATH:+$PATH:}/bin:/usr/bin:/usr/sbin:/sbin"
 
-if [ -f $VBOXDIR/config ]; then
-    . $VBOXDIR/config
+if [ -f <%= @vboxcontrol_config_file %> ]; then
+    . <%= @vboxcontrol_config_file %>
 else
-    echo "ERROR: $VBOXDIR/config does not exist. Exiting."
+    echo "ERROR: <%= @vboxcontrol_config_file %> does not exist. Exiting."
     exit 1
 fi
 
@@ -58,8 +56,8 @@ wait_for_closing_machines() {
 # RUN
 case "$1" in
     start)
-        if [ -f /etc/virtualbox/machines_enabled ]; then
-            cat /etc/virtualbox/machines_enabled | while read VM; do
+        if [ -f <%= @autostart_machines_file %> ]; then
+            cat <%= @autostart_machines_file %> | while read VM; do
                 log_action_msg "Starting VM: $VM ..."
                 $SU "$VBOXMANAGE startvm \"$VM\" -type vrdp"
             done

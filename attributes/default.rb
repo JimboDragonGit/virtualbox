@@ -29,3 +29,13 @@ default['virtualbox']['ext_pack_name'] = "Oracle_VM_VirtualBox_Extension_Pack-#{
 default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node['virtualbox']['ext_pack_name']}"
 
 default['virtualbox']['default_interface'] = node['network']['default_interface']
+
+default['virtualbox']['config_folder'] = '/etc/vbox'
+default['virtualbox']['autostartfolder'] = ::File.join(node['virtualbox']['config_folder'], 'autostart')
+default['virtualbox']['autostart_db_folder'] = ::File.join(node['virtualbox']['autostartfolder'], 'dbpath')
+default['virtualbox']['autostart_config_file'] = ::File.join(node['virtualbox']['autostartfolder'], 'vboxautostart.conf')
+default['virtualbox']['autostart_machines_file'] = ::File.join(node['virtualbox']['autostartfolder'], 'machines_enabled')
+default['virtualbox']['vboxcontrol_config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vboxcontrol.conf')
+default['virtualbox']['config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vbox.cfg')
+
+
