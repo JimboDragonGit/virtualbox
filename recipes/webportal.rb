@@ -77,6 +77,7 @@ template ::File.join(::File.join(default_docroot_dir, 'phpvirtualbox'), 'config.
   end
 
   variables(
+    user: node[cookbook_name]['user'],
     password: password
   )
 end

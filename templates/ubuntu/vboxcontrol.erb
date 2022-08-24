@@ -29,13 +29,6 @@ run_by_init() {
 
 export PATH="${PATH:+$PATH:}/bin:/usr/bin:/usr/sbin:/sbin"
 
-if [ -f <%= @vboxcontrol_config_file %> ]; then
-    . <%= @vboxcontrol_config_file %>
-else
-    echo "ERROR: <%= @vboxcontrol_config_file %> does not exist. Exiting."
-    exit 1
-fi
-
 SU="su $VM_USER -c"
 VBOXMANAGE="VBoxManage -nologo"
 

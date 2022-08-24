@@ -27,14 +27,8 @@ def vbox_dir(dirname)
     group node[cookbook_name]['group']
   end
 end
-include_recipe "#{cookbook_name}::user"
 
-host_interface = node[cookbook_name]['default_interface']
-addresses = node['network']['interfaces'][host_interface]['addresses']
-host_ip = 'unknown'
-addresses.each do |ip, params|
-  host_ip = ip if params['family'].eql?('inet')
-end
+include_recipe "#{cookbook_name}::user"
 
 vbox_dir node[cookbook_name]['config_folder']
 vbox_dir node[cookbook_name]['autostartfolder']
@@ -46,18 +40,6 @@ cookbook_file node[cookbook_name]['autostart_machines_file'] do
   user node[cookbook_name]['user']
   group node[cookbook_name]['group']
   not_if FileTest.exists?(node[cookbook_name]['autostart_machines_file']).to_s
-end
-
-template node[cookbook_name]['vboxcontrol_config_file'] do
-  source 'vboxcontrol.conf.erb'
-  mode '0664'
-  user node[cookbook_name]['user']
-  group node[cookbook_name]['group']
-  variables(
-      host_interface: host_interface,
-      host_ip: host_ip,
-      user: node[cookbook_name]['user']
-    )
 end
 
 template node[cookbook_name]['config_file'] do
@@ -82,9 +64,12 @@ template '/etc/init.d/vboxcontrol' do
   variables(user: node[cookbook_name]['user'], autostart_machines_file: node[cookbook_name]['autostart_machines_file'], vboxcontrol_config_file: node[cookbook_name]['vboxcontrol_config_file'])
 end
 
+Chef::Log.warn("node[cookbook_name]['user'] = #{node[cookbook_name]['user']}")
+
 execute 'enable virtualbox autostart' do
   user node[cookbook_name]['user']
   group node[cookbook_name]['group']
+  login true
   command "VBoxManage setproperty autostartdbpath #{node[cookbook_name]['autostart_db_folder']}"
 end
 
