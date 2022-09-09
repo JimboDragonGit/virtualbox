@@ -7,7 +7,6 @@
  *
  */
 class phpVBoxConfig {
-<% Chef::Log.warn("self methods = #{methods}") %>
 /* Username / Password for system user that runs VirtualBox */
 var $username = '<%= @user %>';
 var $password = '<%= @password %>';
@@ -156,7 +155,7 @@ var $hostMemInfoRefreshInterval = 5;
 /*
  * Display guest additions version of a running VM on its Details tab
  */
-#var $enableGuestAdditionsVersionDisplay = true;
+var $enableGuestAdditionsVersionDisplay = true;
 
 /* Disable any of phpVirtualBox's main tabs */
 #var $disableTabVMSnapshots = true; // Snapshots tab

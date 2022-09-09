@@ -19,8 +19,8 @@
 
 extend Vbox::Helpers
 
-default['virtualbox']['version'] = '6.1.34'
-default['virtualbox']['releasever'] = '150636'
+default['virtualbox']['version'] = '6.1.36'
+default['virtualbox']['releasever'] = '152435'
 
 default['virtualbox']['baseurl'] = "https://download.virtualbox.org/virtualbox/#{node['virtualbox']['version']}"
 default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_version}"
