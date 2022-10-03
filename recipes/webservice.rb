@@ -42,6 +42,11 @@ end
 #   environment ({'HOME' => "/home/#{node[cookbook_name]['user']}"})
 # end
 
+chef_sleep 'Wait a little...' do
+  seconds 3
+  action :sleep
+end
+
 service 'vboxweb-service' do
   action [:enable, :start]
 end
