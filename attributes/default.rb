@@ -37,5 +37,3 @@ default['virtualbox']['autostart_config_file'] = ::File.join(node['virtualbox'][
 default['virtualbox']['autostart_machines_file'] = ::File.join(node['virtualbox']['autostartfolder'], 'machines_enabled')
 default['virtualbox']['vboxcontrol_config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vboxcontrol.conf')
 default['virtualbox']['config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vbox.cfg')
-
-
