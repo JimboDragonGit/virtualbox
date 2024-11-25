@@ -19,13 +19,13 @@
 
 extend Vbox::Helpers
 
-default['virtualbox']['version'] = '6.1.36'
-default['virtualbox']['releasever'] = '152435'
+default['virtualbox']['version'] = '7.1.4'
+default['virtualbox']['releasever'] = '165100'
 
 default['virtualbox']['baseurl'] = "https://download.virtualbox.org/virtualbox/#{node['virtualbox']['version']}"
 default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_version}"
 
-default['virtualbox']['ext_pack_name'] = "Oracle_VM_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}-#{node['virtualbox']['releasever']}.vbox-extpack"
+default['virtualbox']['ext_pack_name'] = "Oracle_VirtualBox_Extension_Pack-#{node['virtualbox']['version']}.vbox-extpack"
 default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node['virtualbox']['ext_pack_name']}"
 
 default['virtualbox']['default_interface'] = node['network']['default_interface']
