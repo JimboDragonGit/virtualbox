@@ -3,7 +3,7 @@ maintainer       'Jimbo Dragon'
 maintainer_email 'jimbo_dragon@hotmail.com'
 license          'Apache 2.0'
 description      'Installs virtualbox'
-version '4.1.9'
+version '4.1.10'
 chef_version '>= 16.6.14'
 
 # The `issues_url` points to the location where issues for this cookbook are
