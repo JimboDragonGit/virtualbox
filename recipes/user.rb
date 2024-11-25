@@ -21,12 +21,9 @@
 # needs to be added.
 chef_gem 'unix-crypt' do
   action :upgrade
-  compile_time true
 end
 
-chef_gem 'chef-vault' do
-  compile_time true
-end
+chef_gem 'chef-vault'
 
 require 'chef-vault'
 require 'unix_crypt'
