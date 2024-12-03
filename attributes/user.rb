@@ -19,6 +19,7 @@
 
 # Settings for integrating virtualbox as a system service, automatically rebooting VMs at host startup
 default['virtualbox']['user'] = 'vbox'
+default['virtualbox']['create_user'] = true
 default['virtualbox']['group'] = 'vboxusers'
 
 default['virtualbox']['userdatabag'] = 'users'

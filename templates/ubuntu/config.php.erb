@@ -12,18 +12,18 @@ var $username = '<%= @user %>';
 var $password = '<%= @password %>';
 
 /* SOAP URL of vboxwebsrv (not phpVirtualBox's URL) */
-var $location = 'http://127.0.0.1:18083/';
+var $location = 'http://<%= @vrdeaddress %>:18083/';
 
 /* Default language. See languages folder for more language options.
  * Can also be changed in File -> Preferences -> Language in
  * phpVirtualBox.
  */
-var $language = 'en';
+var $language = '<%= @lang %>';
 
 /* Set the standard VRDE Port Number / Range, e.g. 1010-1020 or 1027 */
 var $vrdeports = '9000-9100';
 /* Set the default VRDE address, e.g. 192.168.1.1 */
-#var $vrdeaddress = '192.168.1.1';
+#var $vrdeaddress = '<%= @vrdeaddress %>';
 
 /*
  *
@@ -37,10 +37,10 @@ var $vrdeports = '9000-9100';
 /*
 var $servers = array(
         array(
-                'name' => 'London',
+                'name' => 'localhost',
                 'username' => 'user',
                 'password' => 'pass',
-                'location' => 'http://192.168.1.1:18083/',
+                'location' => 'http://127.0.0.1:18083/',
                 'authMaster' => true // Use this server for authentication
         ),
         array(
@@ -51,6 +51,15 @@ var $servers = array(
         ),
 );
 */
+var $servers = array(
+        array(
+                'name' => '<%= @server_name %>',
+                'username' => '<%= @user %>',
+                'password' => '<%= @password %>',
+                'location' => 'http://<%= @vrdeaddress %>:18083/',
+                'authMaster' => true // Use this server for authentication
+        )
+);
 
 // Disable authentication
 #var $noAuth = true;

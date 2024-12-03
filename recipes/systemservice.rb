@@ -28,7 +28,9 @@ def vbox_dir(dirname)
   end
 end
 
-include_recipe "#{cookbook_name}::user"
+if node[cookbook_name]['create_user'] == true
+  include_recipe "#{cookbook_name}::user"
+end
 
 vbox_dir node[cookbook_name]['config_folder']
 vbox_dir node[cookbook_name]['autostartfolder']
@@ -75,4 +77,35 @@ end
 
 service 'vboxcontrol' do
   action [:enable, :start]
+end
+
+systemd_unit "#{new_resource.sdlc_name}.service" do
+content(
+  {
+    Unit: {
+      SourcePath: '/usr/lib/virtualbox/vboxdrv.sh'
+      Description: 'VirtualBox Linux kernel module',
+      Before: runlevel2.target runlevel3.target runlevel4.target runlevel5.target shutdown.target,
+      Conflicts: shutdown.targe
+    },
+    Service: {
+      Type: 'forking',
+      Restart: 'no',
+      TimeoutSec: '5min',
+      IgnoreSIGPIPE: 'no',
+      KillMode: 'process',
+      GuessMainPID: 'no',
+      RemainAfterExit: 'yes'
+      ExecStart: '/usr/lib/virtualbox/vboxdrv.sh start',
+      ExecStop: '/usr/lib/virtualbox/vboxdrv.sh stop',
+      User: node[cookbook_name]['user'],
+      Group: node[cookbook_name]['group'],
+    },
+    Install: {
+      WantedBy: 'multi-user.target',
+    }
+  }
+)
+action actions
+verify false
 end

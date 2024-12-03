@@ -78,7 +78,10 @@ template ::File.join(::File.join(default_docroot_dir, 'phpvirtualbox'), 'config.
 
   variables(
     user: node[cookbook_name]['user'],
-    password: password
+    password: password,
+    lang: node[cookbook_name]['webportal']['lang'],
+    vrdeaddress: node[cookbook_name]['webportal']['vrdeaddress'],
+    server_name: node[cookbook_name]['webportal']['server_name']
   )
 end
 
