@@ -41,7 +41,9 @@ cookbook_file node[cookbook_name]['autostart_machines_file'] do
   mode '0664'
   user node[cookbook_name]['user']
   group node[cookbook_name]['group']
-  not_if FileTest.exists?(node[cookbook_name]['autostart_machines_file']).to_s
+  not_if do
+    FileTest.exists?(node[cookbook_name]['autostart_machines_file'])
+  end
 end
 
 template node[cookbook_name]['config_file'] do
