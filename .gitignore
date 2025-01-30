@@ -12,3 +12,4 @@ bin/*
 .kitchen.local.yml
 
 foodcritic.log
+berks-cookbooks
