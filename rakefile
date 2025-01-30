@@ -39,12 +39,15 @@ end
 task clean_structure: %i(clean) do
   default_variable = "\nCeci est le plan de nettoyage\n\n"
   puts default_variable
-  system('berks upload')
+  system('berks install && berks upload')
 end
 
 task unpack_structure: %i(package:cookbook package:inspec) do
   default_variable = "\nCeci est le plan de décompression\n\n"
   puts default_variable
+  %w(apache2 yum-epel).ewach do |cb|
+    system("knife cookbook upload #{cb} --freeze --cookbook-path /var/svc_root/workspace/Cookbooks/berks-cookbooks")
+  end
   # FileUtils.rm_rf('vendor')
 end
 

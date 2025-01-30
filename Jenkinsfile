@@ -36,6 +36,7 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           tool name: 'Default', type: 'git'
           echo 'Verify..'
+          sh 'knife cookbook show apache2'
           sh 'knife cookbook show virtualbox'
         }
       }
