@@ -33,18 +33,19 @@ end
 task verify_structure: %i() do
   default_variable = "\nCeci est le plan de vérification\n\n"
   puts default_variable
-  system('berks upload')
+  system('berks install')
 end
 
 task clean_structure: %i(clean) do
   default_variable = "\nCeci est le plan de nettoyage\n\n"
   puts default_variable
-  # FileUtils.rm_rf('vendor')
+  system('berks install')
 end
 
 task unpack_structure: %i(package:cookbook package:inspec) do
   default_variable = "\nCeci est le plan de décompression\n\n"
   puts default_variable
+  # FileUtils.rm_rf('vendor')
 end
 
 task prepare_structure: %i(release:chefserver) do
