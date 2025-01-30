@@ -76,7 +76,7 @@ pipeline {
     }
     stage('End') {
       steps {
-        echo 'Finishing..'s
+        echo 'Finishing..'
       }
     }
   }
