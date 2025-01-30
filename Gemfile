@@ -8,6 +8,10 @@ group :integration do
   gem 'test-kitchen'
 end
 
+group :build do
+  gem 'chef-raketasks'
+end
+
 group :test do
   gem 'rspec_junit_formatter'
 end
