@@ -32,6 +32,7 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
           sh 'bundle install'
+          sh 'ls -alh /var/svc_root/workspace/Cookbooks'
           sh 'rake'
         }
       }

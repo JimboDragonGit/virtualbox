@@ -39,7 +39,7 @@ end
 task clean_structure: %i(clean) do
   default_variable = "\nCeci est le plan de nettoyage\n\n"
   puts default_variable
-  system('berks install')
+  system('berks upload')
 end
 
 task unpack_structure: %i(package:cookbook package:inspec) do
