@@ -17,6 +17,7 @@ pipeline {
           wrap([$class: 'TimestamperBuildWrapper']) {
             echo 'Begin..'
             echo "${params.Greeting} World!"
+            sh 'chef shell-init bash'
             sh 'knife config show'
             sh 'chef show-policy builder_unix'
             sh 'chef show-policy builder_windows'
