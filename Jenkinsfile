@@ -40,7 +40,7 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           tool name: 'Default', type: 'git'
           echo 'Verify..'
-          sh 'knife cookbook show '
+          sh 'knife cookbook show virtualbox'
         }
       }
     }
