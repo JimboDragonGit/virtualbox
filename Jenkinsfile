@@ -32,6 +32,7 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
           sh 'bundle install'
+          sh 'rake'
         }
       }
     }
@@ -77,7 +78,6 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           tool name: 'Default', type: 'git'
           echo 'Build..'
-          sh 'rake'
         }
       }
     }
