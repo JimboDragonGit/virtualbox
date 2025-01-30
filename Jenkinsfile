@@ -23,6 +23,7 @@ pipeline {
             sh 'chef show-policy builder_unix'
             sh 'chef show-policy builder_windows'
             sh 'rake --tasks'
+            sh 'rake --tasks --all'
           }
         }
     }
@@ -31,7 +32,6 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
           sh 'bundle install'
-          sh 'rake'
         }
       }
     }
@@ -40,6 +40,7 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           tool name: 'Default', type: 'git'
           echo 'Verify..'
+          sh 'knife cookbook show '
         }
       }
     }
@@ -60,7 +61,10 @@ pipeline {
     }
     stage('Build') {
       steps {
-          echo 'Building..'
+        wrap([$class: 'TimestamperBuildWrapper']) {
+          tool name: 'Default', type: 'git'
+          echo 'Build..'
+        }
       }
     }
     stage('Check') {
@@ -70,7 +74,11 @@ pipeline {
     }
     stage('Install') {
       steps {
-        echo 'Install..'
+        wrap([$class: 'TimestamperBuildWrapper']) {
+          tool name: 'Default', type: 'git'
+          echo 'Build..'
+          sh 'rake'
+        }
       }
     }
     stage('Strip') {
