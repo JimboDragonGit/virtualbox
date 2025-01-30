@@ -27,7 +27,6 @@ pipeline {
       steps {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
-            sh "rails new ${params.chefrepo}"
         }
       }
     }
