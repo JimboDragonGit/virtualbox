@@ -27,6 +27,7 @@ pipeline {
       steps {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
+          sh 'bundle install'
         }
       }
     }
