@@ -27,13 +27,13 @@ end
 task download_structure: %i() do
   default_variable = "\nCeci est le plan de téléchargement\n\n"
   puts default_variable
-  system('berks vendor')
+  system('berks install')
 end
 
 task verify_structure: %i() do
   default_variable = "\nCeci est le plan de vérification\n\n"
   puts default_variable
-  system('berks install')
+  system('berks vendor')
 end
 
 task clean_structure: %i(clean) do

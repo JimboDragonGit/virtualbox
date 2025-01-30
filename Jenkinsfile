@@ -5,12 +5,6 @@ pipeline {
     PATH = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/chef-workstation/bin:/opt/chef-workstation/embedded/bin/:/root/.chef/gem/ruby/3.1.0/bin/'
   }
 
-  parameters {
-    string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-    string(name: 'chefrepo', defaultValue: 'default', description: 'chef')
-    string(name: 'generator', defaultValue: '/chef/cookbooks/code_generator', description: 'code generator path')
-  }
-
   stages {
     stage('Begin') {
         steps {
