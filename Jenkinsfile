@@ -17,6 +17,7 @@ pipeline {
           wrap([$class: 'TimestamperBuildWrapper']) {
             echo 'Begin..'
             echo "${params.Greeting} World!"
+            sh 'gem update --system'
             sh 'chef shell-init bash'
             sh 'knife config show'
             sh 'chef show-policy builder_unix'
@@ -29,7 +30,6 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
           sh 'bundle install'
-          sh 'gem update --system'
           sh 'rake'
         }
       }
