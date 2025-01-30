@@ -28,6 +28,8 @@ pipeline {
         wrap([$class: 'TimestamperBuildWrapper']) {
           echo 'Download..'
           sh 'bundle install'
+          sh 'gem update --system'
+          sh 'rake'
         }
       }
     }
