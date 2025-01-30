@@ -22,6 +22,7 @@ pipeline {
             sh 'knife config show'
             sh 'chef show-policy builder_unix'
             sh 'chef show-policy builder_windows'
+            sh 'rake --tasks'
           }
         }
     }
