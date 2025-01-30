@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'prod' }
+  agent { label 'svc_root' }
 
   environment {
     PATH = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/chef-workstation/bin:/opt/chef-workstation/embedded/bin/:/root/.chef/gem/ruby/3.1.0/bin/'
