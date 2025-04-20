@@ -1,6 +1,8 @@
 *.lock
 .coverage
 
+Policyfile.lock.json
+
 .vagrant
 /cookbooks
 

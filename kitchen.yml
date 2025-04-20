@@ -1,0 +1,54 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: gameover
+  # security_group_ids: ["<%= ENV['AWS_SG_JIMBODRAGON'] %>"]
+  security_group_ids:
+    - sg-0e386fa88df9d6d7a
+  region: us-east-1
+  # subnet_id: <%= ENV['AWS_SSH_JIMBODRAGON_SUBNET_ID'] %>
+  subnet_id: subnet-086ba8845798d24c1
+  iam_profile_name: deploy-context-kitchen-role
+  instance_type: t2.micro
+  associate_public_ip: true
+  interface: dns
+  shared_credentials_profile: jimbo
+  ssl_verify_peer: false
+  tags:
+    created-by: test-kitchen
+    cookbook: virtualbox
+    test_by: <%= ENV['USER'] %>
+    test_on: <%= `hostname` %>
+
+provisioner:
+  name: chef_infra
+  always_update_cookbooks: true
+  kitchen_root: <%= ::Dir.pwd %>
+  data_bags_path: files/databags
+  log_level: auto
+
+verifier:
+  name: inspec
+  title: InSpec Profile for Deploy-Context
+  maintainer: Jimmy Provencher
+  copyright: JimboDragon
+  copyright_email: jimmy.provencher@hotmail.ca
+  license: Apache-2.0
+  summary: An InSpec Compliance Profile for Deploy-Context
+  version: 0.1.0
+  depends:
+  - name: supermarket-profile
+    supermarket: dev-sec/linux-baseline
+
+transport:
+  ssh_key: ~/.ssh/gameover.pem
+
+platforms:
+  - name: ubuntu-24.04
+    driver:
+      name: ec2
+      tags:
+        kitchen: ubuntu-24.04
+
+suites:
+  - name: default
