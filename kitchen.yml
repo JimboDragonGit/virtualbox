@@ -52,3 +52,7 @@ platforms:
 
 suites:
   - name: default
+  - name: service
+    named_run_list: service
+  - name: web
+    named_run_list: webportal

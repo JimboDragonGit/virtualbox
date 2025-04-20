@@ -19,6 +19,8 @@
 
 extend Vbox::Helpers
 
+include_recipe '::default'
+
 def vbox_dir(dirname)
   directory dirname do
     mode '1775'
@@ -108,6 +110,6 @@ content(
     }
   }
 )
-action %w(enable create start)
+action %w(create enable start)
 verify false
 end

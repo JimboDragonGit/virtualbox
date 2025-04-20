@@ -14,3 +14,6 @@ run_list 'virtualbox::default'
 
 # Specify a custom source for a single cookbook:
 cookbook 'virtualbox', path: '.'
+
+named_run_list :service, 'virtualbox::systemservice'
+named_run_list :webportal, 'virtualbox::webportal'
