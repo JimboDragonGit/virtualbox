@@ -136,7 +136,13 @@ module Vbox
           case node['platform_version']
           when '24.04'
             packages.map! { |pkg| pkg == 'libflac8' ? 'libflac++10' : pkg }
+            packages.map! { |pkg| pkg == 'libqt5core5a' ? 'libqt6core6t64' : pkg }
+            packages.map! { |pkg| pkg == 'libqt5dbus5' ? 'libqt6dbus6t64' : pkg }
+            packages.map! { |pkg| pkg == 'libqt5gui5' ? 'libqt6gui6t64' : pkg }
+            packages.map! { |pkg| pkg == 'libqt5printsupport5' ? 'libqt6printsupport6t64' : pkg }
+            packages.map! { |pkg| pkg == 'libqt5widgets5' ? 'libqt6widgets6t64' : pkg }
             packages.append 'libvpx9', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6t64'
+            packages.append 'liblzf1', 'libqt6help6', 'libqt6statemachine6', 'libqt6xml6t64', 'libtpms0'
           when '22.04'
             packages.append 'libvpx7', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
           when '20.04'
