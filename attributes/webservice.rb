@@ -22,3 +22,4 @@ default['virtualbox']['webservice']['log']['location'] = '/var/log/vboxwebsrv'
 default['virtualbox']['webservice']['log']['rotate'] = 5 # archived log files
 default['virtualbox']['webservice']['log']['size'] = 10485760 # 10 MByte
 default['virtualbox']['webservice']['log']['interval'] = 604800 # 1 week
+default['virtualbox']['service_name'] = 'vbox-driver'

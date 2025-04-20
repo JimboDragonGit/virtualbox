@@ -81,7 +81,7 @@ service 'vboxcontrol' do
   action [:enable, :start]
 end
 
-systemd_unit "#{new_resource.sdlc_name}.service" do
+systemd_unit "#{node[cookbook_name]['service_name']}.service" do
 content(
   {
     Unit: {
