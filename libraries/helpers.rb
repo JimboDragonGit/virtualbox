@@ -144,7 +144,7 @@ module Vbox
             packages.map! { |pkg| pkg == 'libqt5opengl5' ? 'libqt6opengl6t64' : pkg }
             packages.map! { |pkg| pkg == 'libqt5network5' ? 'libqt6network6t64' : pkg }
             packages.append 'libb2-1', 'qt6-translations-l10n', 'libts0t64', 'qt6-gtk-platformtheme', 'qt6-qpa-plugins', 'qt6-wayland', 'libqt6sql6t64'
-            packages.append 'libopengl0', 'libqt6waylandclient6', 'libqt6waylandcompositor6', 'libqt6waylandeglclienthwintegration6', 'libqt6waylandeglcompositorhwintegration6', 'libqt6wlshellintegration6', 'libproxy1v5', 'libqt6qml6', 'libqt6quick6'
+            packages.append 'libopengl0', 'libqt6waylandclient6', 'libqt6waylandcompositor6', 'libqt6waylandeglclienthwintegration6', 'libqt6waylandeglcompositorhwintegration6', 'libqt6wlshellintegration6', 'libproxy1v5', 'libqt6qml6', 'libqt6quick6', 'libqt6qmlmodels6'
             packages.append 'libvpx9', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6t64'
             packages.append 'liblzf1', 'libqt6help6', 'libqt6statemachine6', 'libqt6xml6t64', 'libtpms0'
           when '22.04'
