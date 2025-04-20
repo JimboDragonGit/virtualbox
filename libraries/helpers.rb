@@ -136,9 +136,8 @@ module Vbox
           case node['platform_version']
           when '24.04'
             packages.map! { |pkg| pkg == 'libflac8' ? 'libflac++10' : pkg }
-            packages.append 'libvpx7', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
+            packages.append 'libvpx9', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6t64'
           when '22.04'
-            # , 'libvulkan1', 'libvpx7', 'libxcb-cursor0', 'libsdl-ttf2.0'
             packages.append 'libvpx7', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
           when '20.04'
             packages.append 'libvpx6', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
