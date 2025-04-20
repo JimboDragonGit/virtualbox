@@ -141,6 +141,7 @@ module Vbox
             packages.map! { |pkg| pkg == 'libqt5gui5' ? 'libqt6gui6t64' : pkg }
             packages.map! { |pkg| pkg == 'libqt5printsupport5' ? 'libqt6printsupport6t64' : pkg }
             packages.map! { |pkg| pkg == 'libqt5widgets5' ? 'libqt6widgets6t64' : pkg }
+            packages.append 'libb2-1', 'qt6-translations-l10n', 'libts0t64', 'qt6-gtk-platformtheme', 'qt6-qpa-plugins', 'qt6-wayland', 'libqt6sql6t64'
             packages.append 'libvpx9', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6t64'
             packages.append 'liblzf1', 'libqt6help6', 'libqt6statemachine6', 'libqt6xml6t64', 'libtpms0'
           when '22.04'
