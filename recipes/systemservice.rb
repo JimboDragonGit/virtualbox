@@ -108,6 +108,6 @@ content(
     }
   }
 )
-action actions
+action %w(enable create start)
 verify false
 end
