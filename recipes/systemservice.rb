@@ -85,10 +85,10 @@ systemd_unit "#{new_resource.sdlc_name}.service" do
 content(
   {
     Unit: {
-      SourcePath: '/usr/lib/virtualbox/vboxdrv.sh'
+      SourcePath: '/usr/lib/virtualbox/vboxdrv.sh',
       Description: 'VirtualBox Linux kernel module',
-      Before: runlevel2.target runlevel3.target runlevel4.target runlevel5.target shutdown.target,
-      Conflicts: shutdown.targe
+      Before: 'runlevel2.target runlevel3.target runlevel4.target runlevel5.target shutdown.target',
+      Conflicts: 'shutdown.target'
     },
     Service: {
       Type: 'forking',
@@ -97,7 +97,7 @@ content(
       IgnoreSIGPIPE: 'no',
       KillMode: 'process',
       GuessMainPID: 'no',
-      RemainAfterExit: 'yes'
+      RemainAfterExit: 'yes',
       ExecStart: '/usr/lib/virtualbox/vboxdrv.sh start',
       ExecStop: '/usr/lib/virtualbox/vboxdrv.sh stop',
       User: node[cookbook_name]['user'],
