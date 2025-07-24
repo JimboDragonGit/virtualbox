@@ -25,8 +25,5 @@ default['virtualbox']['webportal']['enable-apache2-default-site'] = false
 default['virtualbox']['webportal']['lang'] = 'fr'
 default['virtualbox']['webportal']['vrdeaddress'] = '127.0.0.1'
 default['virtualbox']['webportal']['server_name'] = 'vbox_local'
-puts "default['virtualbox']['webportal']['ports'] = #{node['virtualbox']['webportal']['ports']}"
-default['virtualbox']['webportal']['ports'] = %w(80 443) 
-puts "default['virtualbox']['webportal']['ports'] = #{node['virtualbox']['webportal']['ports']}"
+default['virtualbox']['webportal']['ports'] = %w(80 443) if node['virtualbox']['webportal']['ports'].nil?
 default['virtualbox']['webportal']['additionnal_websites'] = []
-

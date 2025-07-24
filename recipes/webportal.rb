@@ -32,7 +32,7 @@ service 'apache2' do
   action :nothing
 end
 
-Chef::Log.warn("Apache ports are #{node['virtualbox']['webportal']['ports']}")
+Chef::Log.debug("Apache ports are #{node['virtualbox']['webportal']['ports']}")
 apache2_install 'virtualbox-apache2' do
   apache_user default_apache_user
   apache_group default_apache_group
