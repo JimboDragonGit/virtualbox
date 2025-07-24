@@ -53,7 +53,7 @@ template node[cookbook_name]['config_file'] do
   user node[cookbook_name]['user']
   group node[cookbook_name]['group']
   mode '0664'
-  variables(user: node[cookbook_name]['user'], webservice_log: node[cookbook_name]['webservice']['log'], autostart_config_file: node[cookbook_name]['autostart_config_file'], autostart_db_folder: node[cookbook_name]['autostart_db_folder'])
+  variables(user: node[cookbook_name]['user'], webservice_log: node[cookbook_name]['webservice']['log'], autostart_config_file: node[cookbook_name]['autostart_config_file'], autostart_db_folder: node[cookbook_name]['config_folder'])
 end
 
 template node[cookbook_name]['autostart_config_file'] do
