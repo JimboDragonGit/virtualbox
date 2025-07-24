@@ -86,6 +86,15 @@ template ::File.join(::File.join(default_docroot_dir, 'phpvirtualbox'), 'config.
   )
 end
 
+node[cookbook_name]['webportal']['additionnal_websites'].each do |website, website_config|
+  apache2_default_site website do
+    default_site_name website
+    website_config.each do |setting, value|
+      send(setting, value)
+    end
+  end
+end
+
 service 'apache2' do
   service_name apache_platform_service_name
   supports restart: true, status: true, reload: true
