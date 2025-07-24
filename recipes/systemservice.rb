@@ -101,9 +101,7 @@ content(
       GuessMainPID: 'no',
       RemainAfterExit: 'yes',
       ExecStart: '/usr/lib/virtualbox/vboxdrv.sh start',
-      ExecStop: '/usr/lib/virtualbox/vboxdrv.sh stop',
-      User: node[cookbook_name]['user'],
-      Group: node[cookbook_name]['group'],
+      ExecStop: '/usr/lib/virtualbox/vboxdrv.sh stop'
     },
     Install: {
       WantedBy: 'multi-user.target',
