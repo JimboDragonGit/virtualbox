@@ -37,6 +37,7 @@ apache2_install 'virtualbox-apache2' do
   apache_group default_apache_group
   mpm 'prefork'
   docroot_dir default_docroot_dir
+  listen node['virtualbox']['webportal']['ports']
 end
 
 apache2_mod_php 'virtualbox-apache2'

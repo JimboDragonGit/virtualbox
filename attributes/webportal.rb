@@ -25,3 +25,4 @@ default['virtualbox']['webportal']['enable-apache2-default-site'] = false
 default['virtualbox']['webportal']['lang'] = 'fr'
 default['virtualbox']['webportal']['vrdeaddress'] = '127.0.0.1'
 default['virtualbox']['webportal']['server_name'] = 'vbox_local'
+default['virtualbox']['webportal']['ports'] = %w(80 443)
