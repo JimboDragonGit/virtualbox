@@ -148,7 +148,7 @@ module Vbox
             packages.append 'libvpx9', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6t64'
             packages.append 'liblzf1', 'libqt6help6', 'libqt6statemachine6', 'libqt6xml6t64', 'libtpms0'
           when '22.04'
-            packages.append 'libvpx7', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
+            packages.append 'libvpx7', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6', 'libxcb-cursor0'
           when '20.04'
             packages.append 'libvpx6', 'libdouble-conversion3', 'libcurl4', 'libopus0', 'libxt6'
           when '18.04'
