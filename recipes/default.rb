@@ -79,13 +79,17 @@ when 'debian'
   execute 'Install Oracle VM VirtualBox Extension Pack' do
     extend Vbox::Helpers
     command "echo 'y' | /usr/bin/vboxmanage extpack install #{::File.join(Chef::Config[:file_cache_path], node[cookbook_name]['ext_pack_name'])}"
-    not_if is_extpack_installed?('Oracle VM VirtualBox Extension Pack').to_s
+    not_if do
+      is_extpack_installed?('Oracle VM VirtualBox Extension Pack')
+    end
   end
 
   execute 'Loading kernel' do
     extend Vbox::Helpers
     command '/sbin/vboxconfig'
-    not_if is_vbox_kernel_loaded?.to_s
+    not_if do
+      is_vbox_kernel_loaded?
+    end
   end
 
 when 'rhel', 'fedora', 'suse'
