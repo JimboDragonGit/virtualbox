@@ -85,6 +85,10 @@ execute 'enable virtualbox autostart' do
 end
 
 service 'vboxcontrol' do
+  action [:stop, :disable]
+end
+
+service 'vboxautostart-service' do
   action [:enable, :start]
 end
 
