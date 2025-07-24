@@ -48,12 +48,17 @@ cookbook_file node[cookbook_name]['autostart_machines_file'] do
   end
 end
 
-template node[cookbook_name]['config_file'] do
-  source 'vbox.cfg.erb'
-  user node[cookbook_name]['user']
-  group node[cookbook_name]['group']
-  mode '0664'
-  variables(user: node[cookbook_name]['user'], webservice_log: node[cookbook_name]['webservice']['log'], autostart_config_file: node[cookbook_name]['autostart_config_file'], autostart_db_folder: node[cookbook_name]['config_folder'])
+[
+  node[cookbook_name]['config_file'],
+  node[cookbook_name]['profile_file']
+].each do |config_file|
+  template config_file do
+    source 'vbox.cfg.erb'
+    user node[cookbook_name]['user']
+    group node[cookbook_name]['group']
+    mode '0664'
+    variables(user: node[cookbook_name]['user'], webservice_log: node[cookbook_name]['webservice']['log'], autostart_config_file: node[cookbook_name]['autostart_config_file'], autostart_db_folder: node[cookbook_name]['config_folder'])
+  end
 end
 
 template node[cookbook_name]['autostart_config_file'] do
@@ -83,6 +88,7 @@ service 'vboxcontrol' do
   action [:enable, :start]
 end
 
+Chef::Log.debug("Setting Virtualbox service for #{node[cookbook_name]['service_name']}")
 systemd_unit "#{node[cookbook_name]['service_name']}.service" do
 content(
   {

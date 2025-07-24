@@ -31,9 +31,11 @@ default['virtualbox']['ext_pack_url'] = "#{node['virtualbox']['baseurl']}/#{node
 default['virtualbox']['default_interface'] = node['network']['default_interface']
 
 default['virtualbox']['config_folder'] = '/etc/vbox'
+default['virtualbox']['profile_folder'] = '/etc/default'
 default['virtualbox']['autostartfolder'] = ::File.join(node['virtualbox']['config_folder'], 'autostart')
 default['virtualbox']['autostart_db_folder'] = ::File.join(node['virtualbox']['autostartfolder'], 'dbpath')
 default['virtualbox']['autostart_config_file'] = ::File.join(node['virtualbox']['autostartfolder'], 'vboxautostart.conf')
 default['virtualbox']['autostart_machines_file'] = ::File.join(node['virtualbox']['autostartfolder'], 'machines_enabled')
 default['virtualbox']['vboxcontrol_config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vboxcontrol.conf')
 default['virtualbox']['config_file'] = ::File.join(node['virtualbox']['config_folder'], 'vbox.cfg')
+default['virtualbox']['profile_file'] = ::File.join(node['virtualbox']['profile_folder'], 'virtualbox')
