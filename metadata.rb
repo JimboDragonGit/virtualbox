@@ -22,7 +22,7 @@ source_url 'https://github.com/jimbodragon/virtualbox'
   supports os
 end
 
-depends 'apache2'
+depends 'apache2', '~> 9.3'
 
 gem 'unix-crypt'
 gem 'chef-vault'
