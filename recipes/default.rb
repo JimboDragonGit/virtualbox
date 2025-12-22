@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-extend Vbox::Helpers
+extend Virtualbox::VboxHelpers
 vbox_package_name = "Oracle VM VirtualBox #{node[cookbook_name]['version']}-#{node[cookbook_name]['releasever']}"
 
 vbox_sha256sum = vbox_sha256sum(node[cookbook_name]['url'])
@@ -77,7 +77,7 @@ when 'debian'
     checksum extpack_sha256sum
   end
   execute 'Install Oracle VM VirtualBox Extension Pack' do
-    extend Vbox::Helpers
+    extend Virtualbox::VboxHelpers
     command "echo 'y' | /usr/bin/vboxmanage extpack install #{::File.join(Chef::Config[:file_cache_path], node[cookbook_name]['ext_pack_name'])}"
     not_if do
       is_extpack_installed?('Oracle VM VirtualBox Extension Pack')
@@ -85,7 +85,7 @@ when 'debian'
   end
 
   execute 'Loading kernel' do
-    extend Vbox::Helpers
+    extend Virtualbox::VboxHelpers
     command '/sbin/vboxconfig'
     not_if do
       is_vbox_kernel_loaded?

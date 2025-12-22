@@ -1,17 +1,7 @@
-source 'https://rubygems.org'
+# frozen_string_literal: true
 
-gem 'chef'
-gem 'berkshelf', '~> 7.0'
+ruby "~> 3.1.0"
 
-group :integration do
-  gem 'kitchen-vagrant'
-  gem 'test-kitchen'
-end
+source "https://rubygems.org"
 
-group :build do
-  gem 'chef-raketasks'
-end
-
-group :test do
-  gem 'rspec_junit_formatter'
-end
+gemspec

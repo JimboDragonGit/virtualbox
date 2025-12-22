@@ -27,7 +27,7 @@ chef_gem 'chef-vault'
 
 require 'chef-vault'
 require 'unix_crypt'
-extend Vbox::Helpers
+extend Virtualbox::VboxHelpers
 
 case ChefVault::Item.data_bag_item_type(node[cookbook_name]['userdatabag'], node[cookbook_name]['user'])
 when :normal
@@ -41,7 +41,7 @@ end unless data_bag(node[cookbook_name]['userdatabag']).nil? || data_bag(node[co
 # convert clear to encrypted "#{UnixCrypt::SHA512.build(data_bag_item('passwords',node[cookbook_name]['user'])['password'])}"
 
 user node[cookbook_name]['user'] do
-  extend Vbox::Helpers
+  extend Virtualbox::VboxHelpers
   extend UnixCrypt
   username node[cookbook_name]['user']
   gid node[cookbook_name]['group']

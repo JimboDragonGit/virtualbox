@@ -1,58 +1,41 @@
 ---
 driver:
-  name: ec2
-  aws_ssh_key_id: gameover
-  # security_group_ids: ["<%= ENV['AWS_SG_JIMBODRAGON'] %>"]
-  security_group_ids:
-    - sg-0e386fa88df9d6d7a
-  region: us-east-1
-  # subnet_id: <%= ENV['AWS_SSH_JIMBODRAGON_SUBNET_ID'] %>
-  subnet_id: subnet-086ba8845798d24c1
-  iam_profile_name: deploy-context-kitchen-role
-  instance_type: t2.micro
-  associate_public_ip: true
-  interface: dns
-  shared_credentials_profile: jimbo
-  ssl_verify_peer: false
-  tags:
-    created-by: test-kitchen
-    cookbook: virtualbox
-    test_by: <%= ENV['USER'] %>
-    test_on: <%= `hostname` %>
+  name: vagrant
+
+## The forwarded_port port feature lets you connect to ports on the VM guest
+## via localhost on the host.
+## see also: https://www.vagrantup.com/docs/networking/forwarded_ports
+
+#  network:
+#    - ["forwarded_port", {guest: 80, host: 8080}]
 
 provisioner:
   name: chef_infra
-  always_update_cookbooks: true
-  kitchen_root: <%= ::Dir.pwd %>
-  data_bags_path: files/databags
-  log_level: auto
+
+  ## product_name and product_version specifies a specific Chef product and version to install.
+  ## see the Chef documentation for more details: https://docs.chef.io/workstation/config_yml_kitchen/
+  #  product_name: chef
+  #  product_version: 18
 
 verifier:
   name: inspec
-  title: InSpec Profile for Deploy-Context
-  maintainer: Jimmy Provencher
-  copyright: JimboDragon
-  copyright_email: jimmy.provencher@hotmail.ca
-  license: Apache-2.0
-  summary: An InSpec Compliance Profile for Deploy-Context
-  version: 0.1.0
-  depends:
-  - name: supermarket-profile
-    supermarket: dev-sec/linux-baseline
-
-transport:
-  ssh_key: ~/.ssh/gameover.pem
 
 platforms:
-  - name: ubuntu-24.04
-    driver:
-      name: ec2
-      tags:
-        kitchen: ubuntu-24.04
+- name: almalinux-9
+- name: amazonlinux-2023
+- name: centos-stream-9
+- name: debian-12
+- name: fedora-latest
+- name: opensuse-leap-15
+- name: oraclelinux-9
+- name: rockylinux-9
+- name: ubuntu-24.04
 
 suites:
-  - name: default
-  - name: service
-    named_run_list: service
-  - name: web
-    named_run_list: webportal
+- name: default
+  verifier:
+    input_files:
+    - compliance/inputs/repositories.yml
+    inspec_tests:
+    - compliance/profiles/service
+    - compliance/profiles/webportal

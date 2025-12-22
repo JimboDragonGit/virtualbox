@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-extend Vbox::Helpers
+extend Virtualbox::VboxHelpers
 
 include_recipe '::default'
 

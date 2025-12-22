@@ -1,0 +1,50 @@
+{
+	"folders": [
+		{
+			"name": "cookbooks/virtualbox",
+			"path": "."
+		},
+	],
+	"settings": {
+		"ruby.interpreter.commandPath": "ruby",
+		"rubyLsp.rubyExecutablePath": "ruby",
+		"solargraph.useBundler": true,
+		"editor.tabsize": 2,
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+		},
+		"sshfs.configs": [
+			{
+				"name": "Production",
+				"label": "Production",
+				"group": "GitServer",
+				"host": "prod.git.server",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+			{
+				"name": "Test",
+				"label": "Test",
+				"group": "GitServer",
+				"host": "test.git.server",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+			{
+				"name": "Development",
+				"label": "Development",
+				"group": "GitServer",
+				"host": "dev.git.server",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+		]
+	}
+}

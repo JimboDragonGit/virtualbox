@@ -1,8 +1,15 @@
-require 'open-uri'
-require 'uri'
+#
+# Chef Infra Documentation
+# https://docs.chef.io/libraries/
+#
 
-module Vbox
-  module Helpers
+#
+# This module name was auto-generated from the cookbook name. This name is a
+# single word that starts with a capital letter and then continues to use
+# camel-casing throughout the remainder of the name.
+#
+module Virtualbox
+  module VboxHelpers
     include Apache2::Cookbook::Helpers
 
     # Retrieves the SHA256 checksum from the VirtualBox downloads
@@ -162,3 +169,21 @@ module Vbox
     end
   end
 end
+
+#
+# The module you have defined may be extended within the recipe to grant the
+# recipe the helper methods you define.
+#
+# Within your recipe you would write:
+#
+#     extend Virtualbox::VboxHelpers
+#
+#     my_helper_method
+#
+# You may also add this to a single resource within a recipe:
+#
+#     template '/etc/app.conf' do
+#       extend Virtualbox::VboxHelpers
+#       variables specific_key: my_helper_method
+#     end
+#

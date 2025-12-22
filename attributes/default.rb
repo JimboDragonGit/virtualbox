@@ -17,11 +17,10 @@
 # limitations under the License.
 #
 
-extend Vbox::Helpers
+extend Virtualbox::VboxHelpers
 
-default['virtualbox']['version'] = '7.1.8'
-default['virtualbox']['releasever'] = '168469'
-
+default['virtualbox']['version'] = '7.2.4'
+default['virtualbox']['releasever'] = '170995'
 default['virtualbox']['baseurl'] = "https://download.virtualbox.org/virtualbox/#{node['virtualbox']['version']}"
 default['virtualbox']['url'] = "#{node['virtualbox']['baseurl']}/#{file_url_version}"
 
