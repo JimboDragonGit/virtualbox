@@ -34,8 +34,6 @@ platforms:
 suites:
 - name: default
   verifier:
-    input_files:
-    - compliance/inputs/repositories.yml
     inspec_tests:
     - compliance/profiles/service
     - compliance/profiles/webportal

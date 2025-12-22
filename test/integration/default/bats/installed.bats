@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
-@test 'virtualbox-4.3 is installed' {
-  run test "rpm -qa Virtualbox-4.3 || dpkg-query -s virtualbox-4.3"
+version="7.1"
+
+@test "virtualbox-$version is installed" {
+  run test "rpm -qa Virtualbox-$version || dpkg-query -s virtualbox-$version"
   [ "$status" -eq 0 ]
 }
