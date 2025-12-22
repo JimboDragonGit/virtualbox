@@ -3,12 +3,17 @@
 # The Chef InSpec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec/resources/
 
-control 'example_control' do
+control 'virtualbox_webportal_control' do
   impact 0.7
-  title 'Example Control'
-  desc 'This is an example control.  Replace with real test content.'
+  title 'Virtualbox Webportal Control'
+  desc 'This is the control for Virtualbox Webportal'
 
-  describe user('root'), :skip do
-    it { should exist }
+  describe apache_conf do
+    its('User') { should cmp 'www-data' }
+    its('Listen') { should =~ [ '80', '443' ] }
+  end
+
+  describe http('http://localhost:8080/phpvirtualbox') do
+    its('status') { should cmp 200 }
   end
 end
