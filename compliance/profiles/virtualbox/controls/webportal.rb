@@ -10,7 +10,7 @@ control 'virtualbox_webportal_control' do
 
   describe apache_conf do
     its('User') { should cmp 'www-data' }
-    its('Listen') { should =~ [ '80', '443' ] }
+    its('Listen') { should cmp [ '80', '443' ] }
   end
 
   describe http('http://localhost:8080/phpvirtualbox') do
