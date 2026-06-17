@@ -7,12 +7,20 @@ Policyfile.lock.json
 /cookbooks
 
 # Bundler
+Gemfile.lock
+gems.locked
 bin/*
 .bundle/*
 
+# test kitchen
 .kitchen/
 .kitchen.local.yml
 kitchen.local.yml
+
+# Chef Infra
+Berksfile.lock
+.zero-knife.rb
+Policyfile.lock.json
 
 foodcritic.log
 berks-cookbooks
